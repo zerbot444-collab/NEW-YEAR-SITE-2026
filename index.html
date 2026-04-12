@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="si" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>අලුත් අවුරුදු චාරිත්‍ර 2026 | New Year Rituals</title>
+    <style>
+        /* CSS Variables for Light & Dark Mode */
+        :root {
+            --primary: #d32f2f;
+            --secondary: #ff9800;
+            --gold: #ffd700;
+            --text: #333;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --nav-bg: #1a1a1a;
+            --top-bar: #d32f2f;
+        }
+
+        [data-theme="dark"] {
+            --text: #f1f1f1;
+            --card-bg: rgba(20, 20, 20, 0.85);
+            --nav-bg: #000000;
+            --top-bar: #111;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            color: var(--text);
+            transition: 0.4s;
+            overflow-x: hidden;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            position: fixed; top: 0; width: 100%; height: 60px;
+            background: var(--top-bar); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 20px; z-index: 2000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.4s;
+        }
+
+        .controls { display: flex; align-items: center; gap: 15px; margin-right: 40px; }
+        
+        .lang-btn {
+            background: white; border: none; padding: 5px 12px;
+            border-radius: 15px; cursor: pointer; font-weight: bold; color: #333;
+        }
+        .lang-btn.active { background: var(--gold); }
+
+        .theme-btn {
+            background: none; border: none; font-size: 20px; cursor: pointer; color: white;
+        }
+
+        /* Sidebar Sidenav */
+        .sidenav {
+            height: 100%; width: 0; position: fixed; z-index: 3000;
+            top: 0; left: 0; background-color: var(--nav-bg);
+            overflow-x: hidden; transition: 0.5s; padding-top: 60px;
+            display: flex; flex-direction: column;
+        }
+        .sidenav a {
+            padding: 15px 30px; text-decoration: none; font-size: 18px;
+            color: white; display: block; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidenav a:hover { background: var(--secondary); color: #fff; }
+        .sidenav .closebtn { position: absolute; top: 0; right: 25px; font-size: 36px; border: none;}
+        
+        .share-btn {
+            margin-top: auto; margin-bottom: 20px; background: #25D366; color: white !important;
+            text-align: center; border-radius: 50px; margin-left: 20px; margin-right: 20px; font-weight: bold;
+        }
+
+        /* Pages & Backgrounds */
+        .page-section {
+            display: none; min-height: 100vh; padding: 80px 20px 50px;
+            background-size: cover; background-position: center; background-attachment: fixed;
+            animation: fadeIn 0.5s;
+        }
+        .active-section { display: flex; flex-direction: column; justify-content: center; }
+        
+        #home { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/traditional-oil-lamp-with-flowers_23-2149118335.jpg'); }
+        #nonagathaya { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/buddha-statue-with-candles_23-2149118342.jpg'); }
+        #piseema { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/close-up-traditional-sri-lankan-food_23-2149118345.jpg'); }
+        #anubawaya { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/family-gathering-new-year_23-2149118350.jpg'); }
+        #hisathel { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/ayurvedic-oil-herbs_23-2149118355.jpg'); }
+        #avavada { background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://img.freepik.com/free-photo/fireworks-night-sky_23-2149118360.jpg'); }
+        #about { background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://img.freepik.com/free-photo/beautiful-sri-lankan-landscape_23-2149118370.jpg'); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Professional Glassmorphism Card */
+        .card {
+            max-width: 800px; margin: auto; background: var(--card-bg);
+            padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center; border-top: 6px solid var(--primary);
+            backdrop-filter: blur(10px);
+        }
+
+        .card h1, .card h2 { color: var(--primary); margin-top: 0; }
+        [data-theme="dark"] .card h1, [data-theme="dark"] .card h2 { color: var(--gold); }
+
+        /* Countdown Boxes */
+        .cd-box {
+            background: rgba(0,0,0,0.8); padding: 25px; border-radius: 15px;
+            border: 2px solid var(--gold); margin: 20px auto; display: inline-block; min-width: 300px;
+        }
+        .timer-text { font-size: 2.5rem; font-weight: bold; color: white; display: block; letter-spacing: 2px; }
+        .success-msg { font-size: 1.8rem; color: var(--gold); display: none; margin-top: 10px; animation: pulse 1s infinite; }
+
+        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
+
+        /* Safety List */
+        .safety-list { text-align: left; margin-top: 20px; font-size: 1.1rem; line-height: 1.8; }
+        .safety-list li { margin-bottom: 15px; }
+
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div style="color: white; font-size: 24px; cursor: pointer;" onclick="openNav()">&#9776;</div>
+    <div class="controls">
+        <button class="theme-btn" onclick="toggleTheme()" id="themeIcon">🌙</button>
+        <button class="lang-btn active" onclick="setLang('si')">සිංහල</button>
+        <button class="lang-btn" onclick="setLang('ta')">தமிழ்</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+</div>
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a onclick="showPage('home')" id="m-home">🏠 මුල් පිටුව</a>
+    <a onclick="showPage('nonagathaya')" id="m-nonagathaya">⏱️ නොනගතය</a>
+    <a onclick="showPage('piseema')" id="m-piseema">🔥 ආහාර පිසීම</a>
+    <a onclick="showPage('anubawaya')" id="m-anubawaya">🥣 වැඩ ඇල්ලීම</a>
+    <a onclick="showPage('hisathel')" id="m-hisathel">🌿 හිසතෙල් ගෑම</a>
+    <a onclick="showPage('avavada')" id="m-avavada">⚠️ අවවාද සහ ආරක්ෂාව</a>
+    <a onclick="showPage('about')" id="m-about">ℹ️ අප ගැන</a>
+    <a class="share-btn" onclick="shareSite()" id="m-share">🔗 Share (බෙදාගන්න)</a>
+</div>
+
+<div id="home" class="page-section active-section">
+    <div class="card" style="background: rgba(0,0,0,0.6); color: white; border: 2px solid var(--gold);">
+        <h1 id="h-title" style="color: var(--gold); font-size: 3rem;">සිංහල හා හින්දු අලුත් අවුරුදු උදාව</h1>
+        <div class="cd-box">
+            <div id="timer-home" class="timer-text">00d 00h 00m 00s</div>
+            <div id="msg-home" class="success-msg">සුබ අලුත් අවුරුද්දක් වේවා! 🎆</div>
+        </div>
+    </div>
+</div>
+
+<div id="nonagathaya" class="page-section">
+    <div class="card">
+        <h2 id="n-title">නොනගතය (පුණ්‍ය කාලය)</h2>
+        <div class="cd-box"><div id="timer-nonagathaya" class="timer-text">00d 00h 00m 00s</div><div id="msg-nonagathaya" class="success-msg">නොනගතය ආරම්භ විය!</div></div>
+        <p id="n-desc">අප්‍රේල් 14 පූර්ව භාග 02.21 සිට අප්‍රේල් 14 පස්වරු 03.09 දක්වා පුණ්‍ය කාලයයි. සියලු වැඩ අත්හැර ආගමික වතාවත්වල යෙදෙන්න.</p>
+    </div>
+</div>
+
+<div id="piseema" class="page-section">
+    <div class="card">
+        <h2 id="p-title">ආහාර පිසීමේ නැකත</h2>
+        <div class="cd-box"><div id="timer-piseema" class="timer-text">00d 00h 00m 00s</div><div id="msg-piseema" class="success-msg">නැකත උදා විය!</div></div>
+        <p id="p-desc">අප්‍රේල් 14 පූර්ව භාග 09.05 ට රතු සහ කහ මිශ්‍ර වස්ත්‍රයෙන් සැරසී නැගෙනහිර බලා ලිප් බැඳ ගිනි මොලවන්න.</p>
+    </div>
+</div>
+
+<div id="anubawaya" class="page-section">
+    <div class="card">
+        <h2 id="w-title">වැඩ ඇල්ලීම, ගනුදෙනු කිරීම හා ආහාර අනුභවය</h2>
+        <div class="cd-box"><div id="timer-anubawaya" class="timer-text">00d 00h 00m 00s</div><div id="msg-anubawaya" class="success-msg">සුබ නැකතින් වැඩ අල්ලන්න!</div></div>
+        <p id="w-desc">අප්‍රේල් 14 පූර්ව භාග 10.17 ට නැගෙනහිර දිශාව බලා සියලු වැඩ අල්ලා ගනුදෙනු කොට ආහාර අනුභවය සිදු කරන්න.</p>
+    </div>
+</div>
+
+<div id="hisathel" class="page-section">
+    <div class="card">
+        <h2 id="ht-title">හිසතෙල් ගෑම</h2>
+        <div class="cd-box"><div id="timer-hisathel" class="timer-text">00d 00h 00m 00s</div><div id="msg-hisathel" class="success-msg">හිසතෙල් ගෑමේ නැකත උදා විය!</div></div>
+        <p id="ht-desc">අප්‍රේල් 15 පූර්ව භාග 07.41 ට හරිත වර්ණ වස්ත්‍රයෙන් සැරසී දකුණු දිශාව බලා හිසතෙල් ගා ස්නානය කිරීම මැනවි.</p>
+    </div>
+</div>
+
+<div id="avavada" class="page-section">
+    <div class="card">
+        <h2 id="s-title">අවවාද සහ ආරක්ෂාව ⚠️</h2>
+        <p id="s-intro">අලුත් අවුරුදු සමයේ අනතුරු අවම කරගැනීම සඳහා පහත උපදෙස් පිළිපදින්න:</p>
+        <ul class="safety-list" id="s-list">
+            <li>රතිඤ්ඤා සහ ගිනිකෙළි භාවිතයේදී කුඩා දරුවන් ගැන දැඩි අවධානයක් යොමු කරන්න.</li>
+            <li>ගිනිකෙළි දැල්වීමේදී නිවාස, විදුලි රැහැන් සහ වියළි පරිසරයන්ගෙන් ඈත් වී සිටින්න.</li>
+            <li>බීමතින් රිය පැදවීමෙන් වළකින්න. මාර්ග නීතිවලට ගරු කරන්න.</li>
+            <li>හදිසි අනතුරකදී ප්‍රථමාධාර ලබාදීමට සූදානම්ව සිටින්න. (හදිසි ඇමතුම්: 1990)</li>
+            <li>අවුරුදු ක්‍රීඩා වල යෙදීමේදී තුවාල සිදු නොවන සේ ආරක්ෂාකාරීව ක්‍රීඩා කරන්න.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="about" class="page-section">
+    <div class="card">
+        <h2 id="a-title">අප ගැන</h2>
+        <p id="a-desc">අපි හෙළ සංස්කෘතිය සහ සිරිත් විරිත් අනාගත පරපුරට රැක දීමට වෙහෙසෙන කණ්ඩායමකි. අපගේ අරමුණ වන්නේ ඔබට නිවැරදි නැකත් වේලාවන් සහ චාරිත්‍ර පිළිබඳ මනා අවබෝධයක් ලබා දීමයි.</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<script>
+    // --- Theme Toggle ---
+    function toggleTheme() {
+        const body = document.documentElement;
+        const icon = document.getElementById("themeIcon");
+        if (body.getAttribute("data-theme") === "light") {
+            body.setAttribute("data-theme", "dark");
+            icon.innerText = "☀️";
+        } else {
+            body.setAttribute("data-theme", "light");
+            icon.innerText = "🌙";
+        }
+    }
+
+    // --- Share API ---
+    function shareSite() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'අලුත් අවුරුදු චාරිත්‍ර 2026',
+                text: '2026 සිංහල හා හින්දු අලුත් අවුරුදු නැකත් සීට්ටුව, චාරිත්‍ර සහ ආරක්ෂක උපදෙස් මෙතනින් බලන්න.',
+                url: window.location.href
+            }).catch((error) => console.log('Error sharing', error));
+        } else {
+            alert("ඔබගේ බ්‍රව්සරය Share පහසුකමට සහය නොදක්වයි. කරුණාකර ලින්ක් එක කොපි කරගන්න.");
+        }
+    }
+
+    // --- Language Data & Toggle ---
+    const translations = {
+        si: {
+            'm-home': '🏠 මුල් පිටුව', 'm-nonagathaya': '⏱️ නොනගතය', 'm-piseema': '🔥 ආහාර පිසීම', 'm-anubawaya': '🥣 වැඩ ඇල්ලීම', 'm-hisathel': '🌿 හිසතෙල් ගෑම', 'm-avavada': '⚠️ අවවාද සහ ආරක්ෂාව', 'm-about': 'ℹ️ අප ගැන', 'm-share': '🔗 Share (බෙදාගන්න)',
+            'h-title': 'සිංහල හා හින්දු අලුත් අවුරුදු උදාව',
+            'n-title': 'නොනගතය (පුණ්‍ය කාලය)', 'n-desc': 'අප්‍රේල් 14 පූර්ව භාග 02.21 සිට අප්‍රේල් 14 පස්වරු 03.09 දක්වා පුණ්‍ය කාලයයි. සියලු වැඩ අත්හැර ආගමික වතාවත්වල යෙදෙන්න.',
+            'p-title': 'ආහාර පිසීමේ නැකත', 'p-desc': 'අප්‍රේල් 14 පූර්ව භාග 09.05 ට රතු සහ කහ මිශ්‍ර වස්ත්‍රයෙන් සැරසී නැගෙනහිර බලා ලිප් බැඳ ගිනි මොලවන්න.',
+            'w-title': 'වැඩ ඇල්ලීම සහ ආහාර අනුභවය', 'w-desc': 'අප්‍රේල් 14 පූර්ව භාග 10.17 ට නැගෙනහිර දිශාව බලා සියලු වැඩ අල්ලා ගනුදෙනු කොට ආහාර අනුභවය සිදු කරන්න.',
+            'ht-title': 'හිසතෙල් ගෑම', 'ht-desc': 'අප්‍රේල් 15 පූර්ව භාග 07.41 ට හරිත වර්ණ වස්ත්‍රයෙන් සැරසී දකුණු දිශාව බලා හිසතෙල් ගා ස්නානය කිරීම මැනවි.',
+            's-title': 'අවවාද සහ ආරක්ෂාව ⚠️', 's-intro': 'අලුත් අවුරුදු සමයේ අනතුරු අවම කරගැනීම සඳහා පහත උපදෙස් පිළිපදින්න:',
+            's-list': '<li>රතිඤ්ඤා සහ ගිනිකෙළි භාවිතයේදී කුඩා දරුවන් ගැන දැඩි අවධානයක් යොමු කරන්න.</li><li>ගිනිකෙළි දැල්වීමේදී නිවාස, විදුලි රැහැන් සහ වියළි පරිසරයන්ගෙන් ඈත් වී සිටින්න.</li><li>බීමතින් රිය පැදවීමෙන් වළකින්න. මාර්ග නීතිවලට ගරු කරන්න.</li><li>හදිසි අනතුරකදී ප්‍රථමාධාර ලබාදීමට සූදානම්ව සිටින්න. (හදිසි ඇමතුම්: 1990)</li><li>අවුරුදු ක්‍රීඩා වල යෙදීමේදී තුවාල සිදු නොවන සේ ආරක්ෂාකාරීව ක්‍රීඩා කරන්න.</li>',
+            'a-title': 'අප ගැන', 'a-desc': 'අපි හෙළ සංස්කෘතිය සහ සිරිත් විරිත් අනාගත පරපුරට රැක දීමට වෙහෙසෙන කණ්ඩායමකි. අපගේ අරමුණ වන්නේ ඔබට නිවැරදි නැකත් වේලාවන් ලබා දීමයි.'
+        },
+        ta: {
+            'm-home': '🏠 முகப்பு', 'm-nonagathaya': '⏱️ புண்ணிய காலம்', 'm-piseema': '🔥 உணவு சமைத்தல்', 'm-anubawaya': '🥣 வேலைகளை ஆரம்பித்தல்', 'm-hisathel': '🌿 எண்ணெய் பூசுதல்', 'm-avavada': '⚠️ பாதுகாப்பு அறிவுரைகள்', 'm-about': 'ℹ️ எங்களைப் பற்றி', 'm-share': '🔗 பகிரவும்',
+            'h-title': 'சிங்கள மற்றும் தமிழ் புத்தாண்டு உதயம்',
+            'n-title': 'புண்ணிய காலம்', 'n-desc': 'ஏப்ரல் 14 அதிகாலை 02.21 முதல் மாலை 03.09 வரை புண்ணிய காலம். சமய வழிபாடுகளில் ஈடுபடவும்.',
+            'p-title': 'உணவு சமைப்பதற்கான சுப நேரம்', 'p-desc': 'ஏப்ரல் 14 காலை 09.05 மணிக்கு கிழக்கு நோக்கி அடுப்பு மூட்டி உணவு சமைக்கவும்.',
+            'w-title': 'வேலைகளை ஆரம்பித்தல்', 'w-desc': 'ஏப்ரல் 14 காலை 10.17 மணிக்கு கிழக்கு நோக்கி வேலைகளை ஆரம்பித்து உணவு உட்கொள்ளவும்.',
+            'ht-title': 'எண்ணெய் பூசுதல்', 'ht-desc': 'ஏப்ரல் 15 காலை 07.41 மணிக்கு தெற்கு நோக்கி தலைக்கு எண்ணெய் பூசி நீராடவும்.',
+            's-title': 'பாதுகாப்பு அறிவுரைகள் ⚠️', 's-intro': 'புத்தாண்டு காலத்தில் விபத்துகளைத் தவிர்க்க பின்வருவனவற்றைப் பின்பற்றவும்:',
+            's-list': '<li>பட்டாசுகளை வெடிக்கும் போது குழந்தைகள் மீது அதிக கவனம் செலுத்துங்கள்.</li><li>வீடுகள், மின் இணைப்புகள் மற்றும் காய்ந்த பகுதிகளில் பட்டாசு கொளுத்துவதைத் தவிர்க்கவும்.</li><li>மது அருந்திவிட்டு வாகனம் ஓட்ட வேண்டாம்.</li><li>அவசர சிகிச்சைக்கு தயாராக இருங்கள் (அவசர எண்: 1990).</li><li>புத்தாண்டு விளையாட்டுகளில் பாதுகாப்பாக ஈடுபடவும்.</li>',
+            'a-title': 'எங்களைப் பற்றி', 'a-desc': 'எமது கலாசார விழுமியங்களை அடுத்த தலைமுறைக்கு கொண்டு சேர்க்கும் நோக்கில் நாம் செயற்படுகின்றோம்.'
+        },
+        en: {
+            'm-home': '🏠 Home', 'm-nonagathaya': '⏱️ Nonagathaya', 'm-piseema': '🔥 Cooking', 'm-anubawaya': '🥣 Transactions', 'm-hisathel': '🌿 Head Anointing', 'm-avavada': '⚠️ Safety Tips', 'm-about': 'ℹ️ About Us', 'm-share': '🔗 Share',
+            'h-title': 'Sinhala & Hindu New Year Dawn',
+            'n-title': 'Nonagathaya (Inauspicious Time)', 'n-desc': 'From April 14th 02:21 AM to 03:09 PM. Cease all work and engage in religious activities.',
+            'p-title': 'Cooking Rituals', 'p-desc': 'On April 14th at 09:05 AM, face East, light the hearth and prepare milk rice.',
+            'w-title': 'Work and Food Consumption', 'w-desc': 'On April 14th at 10:17 AM, face East to commence work, transactions, and consume food.',
+            'ht-title': 'Head Anointing', 'ht-desc': 'On April 15th at 07:41 AM, face South and anoint the head with oil and bathe.',
+            's-title': 'Safety Guidelines ⚠️', 's-intro': 'Follow these tips to minimize accidents during the festive season:',
+            's-list': '<li>Pay strict attention to children when using firecrackers.</li><li>Keep fireworks away from houses, power lines, and dry environments.</li><li>Do not drink and drive. Obey traffic rules.</li><li>Be prepared with a first aid kit. (Emergency Call: 1990)</li><li>Play traditional games safely to avoid injuries.</li>',
+            'a-title': 'About Us', 'a-desc': 'We are dedicated to preserving traditional Sri Lankan cultural values for future generations.'
+        }
+    };
+
+    function setLang(lang) {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        for (let key in translations[lang]) {
+            let el = document.getElementById(key);
+            if (el) {
+                if(key === 's-list') el.innerHTML = translations[lang][key];
+                else el.innerText = translations[lang][key];
+            }
+        }
+    }
+
+    // --- Navigation ---
+    function openNav() { document.getElementById("mySidenav").style.width = "280px"; }
+    function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
+    function showPage(id) {
+        document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
+        document.getElementById(id).classList.add('active-section');
+        closeNav();
+        window.scrollTo(0,0);
+    }
+
+    // --- Countdowns ---
+    const nakathTimes = {
+        'home': new Date(2026, 3, 14, 8, 45, 0).getTime(),
+        'nonagathaya': new Date(2026, 3, 14, 2, 21, 0).getTime(),
+        'piseema': new Date(2026, 3, 14, 9, 5, 0).getTime(),
+        'anubawaya': new Date(2026, 3, 14, 10, 17, 0).getTime(),
+        'hisathel': new Date(2026, 3, 15, 7, 41, 0).getTime()
+    };
+
+    function updateTimers() {
+        const now = new Date().getTime();
+        for (let k in nakathTimes) {
+            const diff = nakathTimes[k] - now;
+            const timerEl = document.getElementById('timer-' + k);
+            const msgEl = document.getElementById('msg-' + k);
+
+            if (diff <= 0) {
+                if(timerEl) timerEl.style.display = 'none';
+                if(msgEl && msgEl.style.display !== 'block') {
+                    msgEl.style.display = 'block';
+                    if(k !== 'nonagathaya') confetti(); // No fireworks for nonagathaya start
+                }
+                continue;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            if(timerEl) timerEl.innerHTML = `${d < 10 ? '0'+d : d}d ${h < 10 ? '0'+h : h}h ${m < 10 ? '0'+m : m}m ${s < 10 ? '0'+s : s}s`;
+        }
+    }
+    setInterval(updateTimers, 1000);
+    updateTimers(); // Initial call
+</script>
+</body>
+</html>
