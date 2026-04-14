@@ -21,7 +21,7 @@ A modern, beautiful, and fully responsive web application built to easily view t
 * **📱 Fully Responsive:** Works flawlessly on both mobile devices and desktop screens.
 
 ## 🚀 Live Demo
-*(ඔබේ Live Website Link එක මෙතන දාන්න, උදාහරණයක් ලෙස: https://zerbot444-collab.github.io/NEW-YEAR-SITE-2026/)*
+*https://zerbot444-collab.github.io/NEW-YEAR-SITE-2026/*
 
 ## 🛠️ Built With
 * **HTML5** * **CSS3** (Animations, Variables, Glassmorphism UI)
