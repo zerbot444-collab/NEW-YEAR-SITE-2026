@@ -33,7 +33,115 @@
             flex-direction: column;
             overflow-x: hidden; /* Prevent scrollbar from animation */
             position: relative;
+            /* Hide scrollbar during welcome screen */
+            overflow-y: hidden; 
         }
+
+        /* -------------------------------------------
+           WELCOME SCREEN (NEW)
+        ------------------------------------------- */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #110505 0%, #3a0d14 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            text-align: center;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
+        }
+
+        .welcome-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+            animation: popIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        .welcome-site-name {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: #ffffff;
+            margin-bottom: 10px;
+            animation: popIn 1s ease forwards 0.3s;
+            opacity: 0;
+        }
+
+        .welcome-desc {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            animation: popIn 1s ease forwards 0.6s;
+            opacity: 0;
+        }
+
+        .enter-btn {
+            background: var(--gold);
+            color: var(--primary-bg);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-family: inherit;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+            transition: 0.3s;
+            animation: popIn 1s ease forwards 0.9s, pulseBtn 2s infinite 1.5s;
+            opacity: 0;
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseBtn {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+
+        /* MAIN CONTENT WRAPPER FOR ANIMATION */
+        #main-wrapper {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 1s ease, transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ANIMATION TRIGGERS WHEN 'site-loaded' CLASS IS ADDED TO BODY */
+        body.site-loaded {
+            overflow-y: auto; /* Enable scroll again */
+        }
+        
+        body.site-loaded #welcome-screen {
+            transform: translateY(-100vh); /* Curtain up effect */
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        body.site-loaded #main-wrapper {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* -------------------------------------------
+           EXISTING CSS (Unchanged)
+        ------------------------------------------- */
 
         /* BACKGROUND ANIMATION (KAUM, KOKIS) */
         .bg-sweets {
@@ -317,41 +425,77 @@
 
 <body>
 
+    <div id="welcome-screen">
+        <h1 class="welcome-title">ආයුබෝවන් 🙏</h1>
+        <h2 class="welcome-site-name">2026 අලුත් අවුරුදු නැකැත්</h2>
+        <p class="welcome-desc">ඔබ සැම සාදරයෙන් පිළිගනිමු!</p>
+        <button class="enter-btn" onclick="enterSite()">නැකැත් බලන්න</button>
+    </div>
+
     <audio id="bg-music" loop>
         <source src="https://raw.githubusercontent.com/zerbot444-collab/NEW-YEAR-SITE-2026/main/music/Sirilaka%20Piri%20Aurudu%20Remix%20%20Aurudu%20Party%20%20Aurudu%20Song%20Remix%20%20Aurudu%20Dj%20%20Sinhala%20Remix%20Song%20%20New.mp3" type="audio/mpeg">
     </audio>
 
-    <button class="music-btn" id="music-toggle" onclick="toggleMusic()">🔇</button>
+    <div id="main-wrapper">
+        
+        <button class="music-btn" id="music-toggle" onclick="toggleMusic()">🔇</button>
 
-    <header>
-        <h1 id="main-title">🎉 2026 අලුත් අවුරුදු නැකැත් 🎉</h1>
-        <div class="lang-switch">
-            <button class="lang-btn active" id="btn-si" onclick="setLang('si')">සිංහල</button>
-            <button class="lang-btn" id="btn-ta" onclick="setLang('ta')">தமிழ்</button>
-        </div>
-    </header>
-
-    <main>
-        <div class="grid-container" id="cards-container">
+        <header>
+            <h1 id="main-title">🎉 2026 අලුත් අවුරුදු නැකැත් 🎉</h1>
+            <div class="lang-switch">
+                <button class="lang-btn active" id="btn-si" onclick="setLang('si')">සිංහල</button>
+                <button class="lang-btn" id="btn-ta" onclick="setLang('ta')">தமிழ்</button>
             </div>
-    </main>
+        </header>
 
-    <div class="modal-overlay" id="modal">
-        <div class="modal-content">
-            <h2 id="modal-title">Title</h2>
-            <p class="desc" id="modal-desc">Description</p>
-            <div class="countdown-box">
-                <div class="countdown-text" id="modal-countdown">00d : 00h : 00m : 00s</div>
+        <main>
+            <div class="grid-container" id="cards-container">
+                </div>
+        </main>
+
+        <div class="modal-overlay" id="modal">
+            <div class="modal-content">
+                <h2 id="modal-title">Title</h2>
+                <p class="desc" id="modal-desc">Description</p>
+                <div class="countdown-box">
+                    <div class="countdown-text" id="modal-countdown">00d : 00h : 00m : 00s</div>
+                </div>
+                <button class="close-btn" onclick="closeModal()">Close / වසන්න</button>
             </div>
-            <button class="close-btn" onclick="closeModal()">Close / වසන්න</button>
         </div>
-    </div>
 
-    <footer>
-        &copy; 2026 Aurudu Nakath | Developed for Publication
-    </footer>
+        <footer>
+            &copy; 2026 Aurudu Nakath | Developed for Publication
+        </footer>
 
-    <script>
+    </div> <script>
+        // -------------------------------------------
+        // NEW: WELCOME SCREEN FUNCTION
+        // -------------------------------------------
+        function enterSite() {
+            // Adds CSS class to trigger transition animations
+            document.body.classList.add('site-loaded');
+            
+            // Remove welcome screen from DOM flow after animation finishes (1 second)
+            setTimeout(() => {
+                document.getElementById('welcome-screen').style.display = 'none';
+            }, 1000);
+
+            // Automatically start music when user clicks "නැකැත් බලන්න"
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicBtn.innerText = "🎵";
+                }).catch((error) => {
+                    console.log("Music blocked by browser policy.");
+                });
+            }
+        }
+
+        // -------------------------------------------
+        // EXISTING LOGIC
+        // -------------------------------------------
+
         // 2026 NAKATH DATA (Sri Lanka Time +05:30)
         const nakathData = [
             {
@@ -579,18 +723,6 @@
             }
             isMusicPlaying = !isMusicPlaying;
         }
-
-        // Try to autoplay music on the first click anywhere on the website (Browser Autoplay Policy)
-        document.body.addEventListener('click', function() {
-            if (!isMusicPlaying) {
-                bgMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    musicBtn.innerText = "🎵";
-                }).catch((error) => {
-                    console.log("Autoplay blocked by browser until user manually plays.");
-                });
-            }
-        }, { once: true }); // Only runs on the very first click
 
         // Initialize App
         renderCards();
