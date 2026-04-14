@@ -1,331 +1,604 @@
 <!DOCTYPE html>
-<html lang="si" data-theme="light">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>අලුත් අවුරුදු චාරිත්‍ර 2026 | New Year Rituals</title>
+    <title>2026 සිංහල හා දෙමළ අලුත් අවුරුදු නැකැත්</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-        /* CSS Variables for Light & Dark Mode */
         :root {
-            --primary: #d32f2f;
-            --secondary: #ff9800;
-            --gold: #ffd700;
-            --text: #333;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --nav-bg: #1a1a1a;
-            --top-bar: #d32f2f;
+            --primary-bg: #1a0b0c; /* Deep dark red/brown */
+            --card-bg: rgba(45, 15, 18, 0.8);
+            --gold: #FFD700;
+            --gold-hover: #ffea70;
+            --text-light: #ffffff;
+            --text-muted: #dcdcdc;
+            --success: #00e676;
         }
 
-        [data-theme="dark"] {
-            --text: #f1f1f1;
-            --card-bg: rgba(20, 20, 20, 0.85);
-            --nav-bg: #000000;
-            --top-bar: #111;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0;
-            color: var(--text);
-            transition: 0.4s;
-            overflow-x: hidden;
+            font-family: 'Poppins', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+            background: linear-gradient(135deg, #2a080c 0%, #110505 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Prevent scrollbar from animation */
+            position: relative;
         }
 
-        /* Top Bar */
-        .top-bar {
-            position: fixed; top: 0; width: 100%; height: 60px;
-            background: var(--top-bar); display: flex; align-items: center;
-            justify-content: space-between; padding: 0 20px; z-index: 2000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.4s;
+        /* BACKGROUND ANIMATION (KAUM, KOKIS) */
+        .bg-sweets {
+            position: fixed;
+            top: -100px;
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.15; /* Subtle background effect */
+            animation: fall linear infinite;
         }
 
-        .controls { display: flex; align-items: center; gap: 15px; margin-right: 40px; }
-        
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* HEADER SECTION */
+        header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--gold);
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        /* LANGUAGE TOGGLE */
+        .lang-switch {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
         .lang-btn {
-            background: white; border: none; padding: 5px 12px;
-            border-radius: 15px; cursor: pointer; font-weight: bold; color: #333;
-        }
-        .lang-btn.active { background: var(--gold); }
-
-        .theme-btn {
-            background: none; border: none; font-size: 20px; cursor: pointer; color: white;
-        }
-
-        /* Sidebar Sidenav */
-        .sidenav {
-            height: 100%; width: 0; position: fixed; z-index: 3000;
-            top: 0; left: 0; background-color: var(--nav-bg);
-            overflow-x: hidden; transition: 0.5s; padding-top: 60px;
-            display: flex; flex-direction: column;
-        }
-        .sidenav a {
-            padding: 15px 30px; text-decoration: none; font-size: 18px;
-            color: white; display: block; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .sidenav a:hover { background: var(--secondary); color: #fff; }
-        .sidenav .closebtn { position: absolute; top: 0; right: 25px; font-size: 36px; border: none;}
-        
-        .share-btn {
-            margin-top: auto; margin-bottom: 20px; background: #25D366; color: white !important;
-            text-align: center; border-radius: 50px; margin-left: 20px; margin-right: 20px; font-weight: bold;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 8px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-size: 0.9rem;
         }
 
-        /* Pages & Backgrounds */
-        .page-section {
-            display: none; min-height: 100vh; padding: 80px 20px 50px;
-            background-size: cover; background-position: center; background-attachment: fixed;
-            animation: fadeIn 0.5s;
+        .lang-btn.active, .lang-btn:hover {
+            background: var(--gold);
+            color: var(--primary-bg);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
         }
-        .active-section { display: flex; flex-direction: column; justify-content: center; }
-        
-        #home { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://www.dropbox.com/scl/fi/s99m5hod8qj5sva3c5yyk/LK940E5FF8-01-E-239-150.JPG?rlkey=6w20g3jig1iub24ip6c54aoyf&st=qi84wq7a&dl=0'); }
-        #nonagathaya { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/buddha-statue-with-candles_23-2149118342.jpg'); }
-        #piseema { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/close-up-traditional-sri-lankan-food_23-2149118345.jpg'); }
-        #anubawaya { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/family-gathering-new-year_23-2149118350.jpg'); }
-        #hisathel { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/ayurvedic-oil-herbs_23-2149118355.jpg'); }
-        #avavada { background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://img.freepik.com/free-photo/fireworks-night-sky_23-2149118360.jpg'); }
-        #about { background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://img.freepik.com/free-photo/beautiful-sri-lankan-landscape_23-2149118370.jpg'); }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* GRID LAYOUT */
+        main {
+            flex: 1;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
 
-        /* Professional Glassmorphism Card */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* CARDS */
         .card {
-            max-width: 800px; margin: auto; background: var(--card-bg);
-            padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            text-align: center; border-top: 6px solid var(--primary);
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 16px;
+            padding: 25px;
             backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card h1, .card h2 { color: var(--primary); margin-top: 0; }
-        [data-theme="dark"] .card h1, [data-theme="dark"] .card h2 { color: var(--gold); }
-
-        /* Countdown Boxes */
-        .cd-box {
-            background: rgba(0,0,0,0.8); padding: 25px; border-radius: 15px;
-            border: 2px solid var(--gold); margin: 20px auto; display: inline-block; min-width: 300px;
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0;
+            transition: 0.4s ease;
         }
-        .timer-text { font-size: 2.5rem; font-weight: bold; color: white; display: block; letter-spacing: 2px; }
-        .success-msg { font-size: 1.8rem; color: var(--gold); display: none; margin-top: 10px; animation: pulse 1s infinite; }
 
-        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 215, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
 
-        /* Safety List */
-        .safety-list { text-align: left; margin-top: 20px; font-size: 1.1rem; line-height: 1.8; }
-        .safety-list li { margin-bottom: 15px; }
+        .card:hover::before {
+            opacity: 1;
+        }
 
+        .card h3 {
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card p.time-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        /* STATUS BADGE */
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .status-upcoming {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--gold);
+        }
+
+        .status-passed {
+            background: rgba(0, 230, 118, 0.2);
+            color: var(--success);
+        }
+
+        /* COMPLETED CARD ANIMATION */
+        .card.passed {
+            border-color: rgba(0, 230, 118, 0.3);
+            background: rgba(10, 40, 20, 0.4);
+        }
+        
+        .card.passed:hover {
+            border-color: rgba(0, 230, 118, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 230, 118, 0.15);
+        }
+
+        /* MODAL (POPUP) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #2a080c, #1a0b0c);
+            border: 1px solid var(--gold);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content h2 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+        }
+
+        .modal-content p.desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        /* COUNTDOWN DISPLAY */
+        .countdown-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .countdown-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-light);
+            padding: 10px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--text-light);
+        }
+
+        /* MUSIC BUTTON */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--gold);
+            color: var(--primary-bg);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 60px; /* Space for the music button */
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .grid-container { grid-template-columns: 1fr; }
+            .countdown-text { font-size: 1.4rem; }
+        }
     </style>
 </head>
+
 <body>
 
-<div class="top-bar">
-    <div style="color: white; font-size: 24px; cursor: pointer;" onclick="openNav()">&#9776;</div>
-    <div class="controls">
-        <button class="theme-btn" onclick="toggleTheme()" id="themeIcon">🌙</button>
-        <button class="lang-btn active" onclick="setLang('si')">සිංහල</button>
-        <button class="lang-btn" onclick="setLang('ta')">தமிழ்</button>
-        <button class="lang-btn" onclick="setLang('en')">EN</button>
-    </div>
-</div>
+    <audio id="bg-music" loop>
+        <source src="https://raw.githubusercontent.com/zerbot444-collab/NEW-YEAR-SITE-2026/main/music/Sirilaka%20Piri%20Aurudu%20Remix%20%20Aurudu%20Party%20%20Aurudu%20Song%20Remix%20%20Aurudu%20Dj%20%20Sinhala%20Remix%20Song%20%20New.mp3" type="audio/mpeg">
+    </audio>
 
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a onclick="showPage('home')" id="m-home">🏠 මුල් පිටුව</a>
-    <a onclick="showPage('nonagathaya')" id="m-nonagathaya">⏱️ නොනගතය</a>
-    <a onclick="showPage('piseema')" id="m-piseema">🔥 ආහාර පිසීම</a>
-    <a onclick="showPage('anubawaya')" id="m-anubawaya">🥣 වැඩ ඇල්ලීම</a>
-    <a onclick="showPage('hisathel')" id="m-hisathel">🌿 හිසතෙල් ගෑම</a>
-    <a onclick="showPage('avavada')" id="m-avavada">⚠️ අවවාද සහ ආරක්ෂාව</a>
-    <a onclick="showPage('about')" id="m-about">ℹ️ අප ගැන</a>
-    <a class="share-btn" onclick="shareSite()" id="m-share">🔗 Share (බෙදාගන්න)</a>
-</div>
+    <button class="music-btn" id="music-toggle" onclick="toggleMusic()">🔇</button>
 
-<div id="home" class="page-section active-section">
-    <div class="card" style="background: rgba(0,0,0,0.6); color: white; border: 2px solid var(--gold);">
-        <h1 id="h-title" style="color: var(--gold); font-size: 3rem;">සිංහල හා හින්දු අලුත් අවුරුදු උදාව</h1>
-        <div class="cd-box">
-            <div id="timer-home" class="timer-text">00d 00h 00m 00s</div>
-            <div id="msg-home" class="success-msg">සුබ අලුත් අවුරුද්දක් වේවා! 🎆</div>
+    <header>
+        <h1 id="main-title">🎉 2026 අලුත් අවුරුදු නැකැත් 🎉</h1>
+        <div class="lang-switch">
+            <button class="lang-btn active" id="btn-si" onclick="setLang('si')">සිංහල</button>
+            <button class="lang-btn" id="btn-ta" onclick="setLang('ta')">தமிழ்</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="grid-container" id="cards-container">
+            </div>
+    </main>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Title</h2>
+            <p class="desc" id="modal-desc">Description</p>
+            <div class="countdown-box">
+                <div class="countdown-text" id="modal-countdown">00d : 00h : 00m : 00s</div>
+            </div>
+            <button class="close-btn" onclick="closeModal()">Close / වසන්න</button>
         </div>
     </div>
-</div>
 
-<div id="nonagathaya" class="page-section">
-    <div class="card">
-        <h2 id="n-title">නොනගතය (පුණ්‍ය කාලය)</h2>
-        <div class="cd-box"><div id="timer-nonagathaya" class="timer-text">00d 00h 00m 00s</div><div id="msg-nonagathaya" class="success-msg">නොනගතය ආරම්භ විය!</div></div>
-        <p id="n-desc">අප්‍රේල් 14 පූර්ව භාග 02.21 සිට අප්‍රේල් 14 පස්වරු 03.09 දක්වා පුණ්‍ය කාලයයි. සියලු වැඩ අත්හැර ආගමික වතාවත්වල යෙදෙන්න.</p>
-    </div>
-</div>
+    <footer>
+        &copy; 2026 Aurudu Nakath | Developed for Publication
+    </footer>
 
-<div id="piseema" class="page-section">
-    <div class="card">
-        <h2 id="p-title">ආහාර පිසීමේ නැකත</h2>
-        <div class="cd-box"><div id="timer-piseema" class="timer-text">00d 00h 00m 00s</div><div id="msg-piseema" class="success-msg">නැකත උදා විය!</div></div>
-        <p id="p-desc">අප්‍රේල් 14 පූර්ව භාග 09.05 ට රතු සහ කහ මිශ්‍ර වස්ත්‍රයෙන් සැරසී නැගෙනහිර බලා ලිප් බැඳ ගිනි මොලවන්න.</p>
-    </div>
-</div>
-
-<div id="anubawaya" class="page-section">
-    <div class="card">
-        <h2 id="w-title">වැඩ ඇල්ලීම, ගනුදෙනු කිරීම හා ආහාර අනුභවය</h2>
-        <div class="cd-box"><div id="timer-anubawaya" class="timer-text">00d 00h 00m 00s</div><div id="msg-anubawaya" class="success-msg">සුබ නැකතින් වැඩ අල්ලන්න!</div></div>
-        <p id="w-desc">අප්‍රේල් 14 පූර්ව භාග 10.17 ට නැගෙනහිර දිශාව බලා සියලු වැඩ අල්ලා ගනුදෙනු කොට ආහාර අනුභවය සිදු කරන්න.</p>
-    </div>
-</div>
-
-<div id="hisathel" class="page-section">
-    <div class="card">
-        <h2 id="ht-title">හිසතෙල් ගෑම</h2>
-        <div class="cd-box"><div id="timer-hisathel" class="timer-text">00d 00h 00m 00s</div><div id="msg-hisathel" class="success-msg">හිසතෙල් ගෑමේ නැකත උදා විය!</div></div>
-        <p id="ht-desc">අප්‍රේල් 15 පූර්ව භාග 07.41 ට හරිත වර්ණ වස්ත්‍රයෙන් සැරසී දකුණු දිශාව බලා හිසතෙල් ගා ස්නානය කිරීම මැනවි.</p>
-    </div>
-</div>
-
-<div id="avavada" class="page-section">
-    <div class="card">
-        <h2 id="s-title">අවවාද සහ ආරක්ෂාව ⚠️</h2>
-        <p id="s-intro">අලුත් අවුරුදු සමයේ අනතුරු අවම කරගැනීම සඳහා පහත උපදෙස් පිළිපදින්න:</p>
-        <ul class="safety-list" id="s-list">
-            <li>රතිඤ්ඤා සහ ගිනිකෙළි භාවිතයේදී කුඩා දරුවන් ගැන දැඩි අවධානයක් යොමු කරන්න.</li>
-            <li>ගිනිකෙළි දැල්වීමේදී නිවාස, විදුලි රැහැන් සහ වියළි පරිසරයන්ගෙන් ඈත් වී සිටින්න.</li>
-            <li>බීමතින් රිය පැදවීමෙන් වළකින්න. මාර්ග නීතිවලට ගරු කරන්න.</li>
-            <li>හදිසි අනතුරකදී ප්‍රථමාධාර ලබාදීමට සූදානම්ව සිටින්න. (හදිසි ඇමතුම්: 1990)</li>
-            <li>අවුරුදු ක්‍රීඩා වල යෙදීමේදී තුවාල සිදු නොවන සේ ආරක්ෂාකාරීව ක්‍රීඩා කරන්න.</li>
-        </ul>
-    </div>
-</div>
-
-<div id="about" class="page-section">
-    <div class="card">
-        <h2 id="a-title">අප ගැන</h2>
-        <p id="a-desc">අපි හෙළ සංස්කෘතිය සහ සිරිත් විරිත් අනාගත පරපුරට රැක දීමට වෙහෙසෙන කණ්ඩායමකි. අපගේ අරමුණ වන්නේ ඔබට නිවැරදි නැකත් වේලාවන් සහ චාරිත්‍ර පිළිබඳ මනා අවබෝධයක් ලබා දීමයි.</p>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
-<script>
-    // --- Theme Toggle ---
-    function toggleTheme() {
-        const body = document.documentElement;
-        const icon = document.getElementById("themeIcon");
-        if (body.getAttribute("data-theme") === "light") {
-            body.setAttribute("data-theme", "dark");
-            icon.innerText = "☀️";
-        } else {
-            body.setAttribute("data-theme", "light");
-            icon.innerText = "🌙";
-        }
-    }
-
-    // --- Share API ---
-    function shareSite() {
-        if (navigator.share) {
-            navigator.share({
-                title: 'අලුත් අවුරුදු චාරිත්‍ර 2026',
-                text: '2026 සිංහල හා හින්දු අලුත් අවුරුදු නැකත් සීට්ටුව, චාරිත්‍ර සහ ආරක්ෂක උපදෙස් මෙතනින් බලන්න.',
-                url: window.location.href
-            }).catch((error) => console.log('Error sharing', error));
-        } else {
-            alert("ඔබගේ බ්‍රව්සරය Share පහසුකමට සහය නොදක්වයි. කරුණාකර ලින්ක් එක කොපි කරගන්න.");
-        }
-    }
-
-    // --- Language Data & Toggle ---
-    const translations = {
-        si: {
-            'm-home': '🏠 මුල් පිටුව', 'm-nonagathaya': '⏱️ නොනගතය', 'm-piseema': '🔥 ආහාර පිසීම', 'm-anubawaya': '🥣 වැඩ ඇල්ලීම', 'm-hisathel': '🌿 හිසතෙල් ගෑම', 'm-avavada': '⚠️ අවවාද සහ ආරක්ෂාව', 'm-about': 'ℹ️ අප ගැන', 'm-share': '🔗 Share (බෙදාගන්න)',
-            'h-title': 'සිංහල හා හින්දු අලුත් අවුරුදු උදාව',
-            'n-title': 'නොනගතය (පුණ්‍ය කාලය)', 'n-desc': 'අප්‍රේල් 14 පූර්ව භාග 02.21 සිට අප්‍රේල් 14 පස්වරු 03.09 දක්වා පුණ්‍ය කාලයයි. සියලු වැඩ අත්හැර ආගමික වතාවත්වල යෙදෙන්න.',
-            'p-title': 'ආහාර පිසීමේ නැකත', 'p-desc': 'අප්‍රේල් 14 පූර්ව භාග 09.05 ට රතු සහ කහ මිශ්‍ර වස්ත්‍රයෙන් සැරසී නැගෙනහිර බලා ලිප් බැඳ ගිනි මොලවන්න.',
-            'w-title': 'වැඩ ඇල්ලීම සහ ආහාර අනුභවය', 'w-desc': 'අප්‍රේල් 14 පූර්ව භාග 10.17 ට නැගෙනහිර දිශාව බලා සියලු වැඩ අල්ලා ගනුදෙනු කොට ආහාර අනුභවය සිදු කරන්න.',
-            'ht-title': 'හිසතෙල් ගෑම', 'ht-desc': 'අප්‍රේල් 15 පූර්ව භාග 07.41 ට හරිත වර්ණ වස්ත්‍රයෙන් සැරසී දකුණු දිශාව බලා හිසතෙල් ගා ස්නානය කිරීම මැනවි.',
-            's-title': 'අවවාද සහ ආරක්ෂාව ⚠️', 's-intro': 'අලුත් අවුරුදු සමයේ අනතුරු අවම කරගැනීම සඳහා පහත උපදෙස් පිළිපදින්න:',
-            's-list': '<li>රතිඤ්ඤා සහ ගිනිකෙළි භාවිතයේදී කුඩා දරුවන් ගැන දැඩි අවධානයක් යොමු කරන්න.</li><li>ගිනිකෙළි දැල්වීමේදී නිවාස, විදුලි රැහැන් සහ වියළි පරිසරයන්ගෙන් ඈත් වී සිටින්න.</li><li>බීමතින් රිය පැදවීමෙන් වළකින්න. මාර්ග නීතිවලට ගරු කරන්න.</li><li>හදිසි අනතුරකදී ප්‍රථමාධාර ලබාදීමට සූදානම්ව සිටින්න. (හදිසි ඇමතුම්: 1990)</li><li>අවුරුදු ක්‍රීඩා වල යෙදීමේදී තුවාල සිදු නොවන සේ ආරක්ෂාකාරීව ක්‍රීඩා කරන්න.</li>',
-            'a-title': 'අප ගැන', 'a-desc': 'අපි හෙළ සංස්කෘතිය සහ සිරිත් විරිත් අනාගත පරපුරට රැක දීමට වෙහෙසෙන කණ්ඩායමකි. අපගේ අරමුණ වන්නේ ඔබට නිවැරදි නැකත් වේලාවන් ලබා දීමයි.'
-        },
-        ta: {
-            'm-home': '🏠 முகப்பு', 'm-nonagathaya': '⏱️ புண்ணிய காலம்', 'm-piseema': '🔥 உணவு சமைத்தல்', 'm-anubawaya': '🥣 வேலைகளை ஆரம்பித்தல்', 'm-hisathel': '🌿 எண்ணெய் பூசுதல்', 'm-avavada': '⚠️ பாதுகாப்பு அறிவுரைகள்', 'm-about': 'ℹ️ எங்களைப் பற்றி', 'm-share': '🔗 பகிரவும்',
-            'h-title': 'சிங்கள மற்றும் தமிழ் புத்தாண்டு உதயம்',
-            'n-title': 'புண்ணிய காலம்', 'n-desc': 'ஏப்ரல் 14 அதிகாலை 02.21 முதல் மாலை 03.09 வரை புண்ணிய காலம். சமய வழிபாடுகளில் ஈடுபடவும்.',
-            'p-title': 'உணவு சமைப்பதற்கான சுப நேரம்', 'p-desc': 'ஏப்ரல் 14 காலை 09.05 மணிக்கு கிழக்கு நோக்கி அடுப்பு மூட்டி உணவு சமைக்கவும்.',
-            'w-title': 'வேலைகளை ஆரம்பித்தல்', 'w-desc': 'ஏப்ரல் 14 காலை 10.17 மணிக்கு கிழக்கு நோக்கி வேலைகளை ஆரம்பித்து உணவு உட்கொள்ளவும்.',
-            'ht-title': 'எண்ணெய் பூசுதல்', 'ht-desc': 'ஏப்ரல் 15 காலை 07.41 மணிக்கு தெற்கு நோக்கி தலைக்கு எண்ணெய் பூசி நீராடவும்.',
-            's-title': 'பாதுகாப்பு அறிவுரைகள் ⚠️', 's-intro': 'புத்தாண்டு காலத்தில் விபத்துகளைத் தவிர்க்க பின்வருவனவற்றைப் பின்பற்றவும்:',
-            's-list': '<li>பட்டாசுகளை வெடிக்கும் போது குழந்தைகள் மீது அதிக கவனம் செலுத்துங்கள்.</li><li>வீடுகள், மின் இணைப்புகள் மற்றும் காய்ந்த பகுதிகளில் பட்டாசு கொளுத்துவதைத் தவிர்க்கவும்.</li><li>மது அருந்திவிட்டு வாகனம் ஓட்ட வேண்டாம்.</li><li>அவசர சிகிச்சைக்கு தயாராக இருங்கள் (அவசர எண்: 1990).</li><li>புத்தாண்டு விளையாட்டுகளில் பாதுகாப்பாக ஈடுபடவும்.</li>',
-            'a-title': 'எங்களைப் பற்றி', 'a-desc': 'எமது கலாசார விழுமியங்களை அடுத்த தலைமுறைக்கு கொண்டு சேர்க்கும் நோக்கில் நாம் செயற்படுகின்றோம்.'
-        },
-        en: {
-            'm-home': '🏠 Home', 'm-nonagathaya': '⏱️ Nonagathaya', 'm-piseema': '🔥 Cooking', 'm-anubawaya': '🥣 Transactions', 'm-hisathel': '🌿 Head Anointing', 'm-avavada': '⚠️ Safety Tips', 'm-about': 'ℹ️ About Us', 'm-share': '🔗 Share',
-            'h-title': 'Sinhala & Hindu New Year Dawn',
-            'n-title': 'Nonagathaya (Inauspicious Time)', 'n-desc': 'From April 14th 02:21 AM to 03:09 PM. Cease all work and engage in religious activities.',
-            'p-title': 'Cooking Rituals', 'p-desc': 'On April 14th at 09:05 AM, face East, light the hearth and prepare milk rice.',
-            'w-title': 'Work and Food Consumption', 'w-desc': 'On April 14th at 10:17 AM, face East to commence work, transactions, and consume food.',
-            'ht-title': 'Head Anointing', 'ht-desc': 'On April 15th at 07:41 AM, face South and anoint the head with oil and bathe.',
-            's-title': 'Safety Guidelines ⚠️', 's-intro': 'Follow these tips to minimize accidents during the festive season:',
-            's-list': '<li>Pay strict attention to children when using firecrackers.</li><li>Keep fireworks away from houses, power lines, and dry environments.</li><li>Do not drink and drive. Obey traffic rules.</li><li>Be prepared with a first aid kit. (Emergency Call: 1990)</li><li>Play traditional games safely to avoid injuries.</li>',
-            'a-title': 'About Us', 'a-desc': 'We are dedicated to preserving traditional Sri Lankan cultural values for future generations.'
-        }
-    };
-
-    function setLang(lang) {
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        for (let key in translations[lang]) {
-            let el = document.getElementById(key);
-            if (el) {
-                if(key === 's-list') el.innerHTML = translations[lang][key];
-                else el.innerText = translations[lang][key];
-            }
-        }
-    }
-
-    // --- Navigation ---
-    function openNav() { document.getElementById("mySidenav").style.width = "280px"; }
-    function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
-    function showPage(id) {
-        document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
-        document.getElementById(id).classList.add('active-section');
-        closeNav();
-        window.scrollTo(0,0);
-    }
-
-    // --- Countdowns ---
-    const nakathTimes = {
-        'home': new Date(2026, 3, 14, 8, 45, 0).getTime(),
-        'nonagathaya': new Date(2026, 3, 14, 2, 21, 0).getTime(),
-        'piseema': new Date(2026, 3, 14, 9, 5, 0).getTime(),
-        'anubawaya': new Date(2026, 3, 14, 10, 17, 0).getTime(),
-        'hisathel': new Date(2026, 3, 15, 7, 41, 0).getTime()
-    };
-
-    function updateTimers() {
-        const now = new Date().getTime();
-        for (let k in nakathTimes) {
-            const diff = nakathTimes[k] - now;
-            const timerEl = document.getElementById('timer-' + k);
-            const msgEl = document.getElementById('msg-' + k);
-
-            if (diff <= 0) {
-                if(timerEl) timerEl.style.display = 'none';
-                if(msgEl && msgEl.style.display !== 'block') {
-                    msgEl.style.display = 'block';
-                    if(k !== 'nonagathaya') confetti(); // No fireworks for nonagathaya start
+    <script>
+        // 2026 NAKATH DATA (Sri Lanka Time +05:30)
+        const nakathData = [
+            {
+                time: "2026-04-14T03:08:00+05:30",
+                title: { si: "පුණ්‍ය කාලය (නොනගතය)", ta: "புண்ணிய காலம் (நொனகதய)" },
+                desc: {
+                    si: "අප්‍රේල් 14 පාන්දර 3:08 සිට සවස 3:56 දක්වා පුණ්‍ය කාලයයි. මෙදින පාන්දර 3:08 ට පෙර ආහාර අනුභව කර සියලු වැඩ අත්හැර ආගමික වත්පිළිවෙත් වල යෙදෙන්න.",
+                    ta: "ஏப்ரல் 14 அதிகாலை 3:08 முதல் மாலை 3:56 வரை. அனைத்து வேலைகளையும் நிறுத்தி மத வழிபாடுகளில் ஈடுபடவும்."
                 }
-                continue;
+            },
+            {
+                time: "2026-04-14T09:32:00+05:30",
+                title: { si: "අලුත් අවුරුදු උදාව", ta: "புத்தாண்டு பிறப்பு" },
+                desc: {
+                    si: "අප්‍රේල් 14 වන අඟහරුවාදා උදේ 9:32 ට නව අවුරුද්ද උදා වේ.",
+                    ta: "ஏப்ரல் 14 செவ்வாய்க்கிழமை காலை 9:32 மணிக்கு புத்தாண்டு பிறக்கிறது."
+                }
+            },
+            {
+                time: "2026-04-14T10:51:00+05:30",
+                title: { si: "ආහාර පිසීම", ta: "அடுப்பு மூட்டுதல்" },
+                desc: {
+                    si: "අප්‍රේල් 14 උදේ 10:51 ට රතු පැහැති වස්ත්‍රාභරණයෙන් සැරසී දකුණු දිශාව බලා ළිප ගිනි මොලවා කිරිබතක් පිළියෙළ කරගන්න.",
+                    ta: "ஏப்ரல் 14 காலை 10:51 மணிக்கு, சிவப்பு ஆடை அணிந்து, தெற்கு திசை நோக்கி அடுப்பு மூட்டவும்."
+                }
+            },
+            {
+                time: "2026-04-14T12:06:00+05:30",
+                title: { si: "වැඩ ඇල්ලීම, ගනුදෙනු කිරීම හා ආහාර අනුභවය", ta: "உணவு உண்ணுதல் மற்றும் வேலை தொடங்குதல்" },
+                desc: {
+                    si: "අප්‍රේල් 14 දහවල් 12:06 ට රතු පැහැති වස්ත්‍රාභරණයෙන් සැරසී දකුණු දිශාව බලා වැඩ අල්ලා, ගනුදෙනු කොට ආහාර අනුභව කරන්න.",
+                    ta: "ஏப்ரல் 14 பகல் 12:06 மணிக்கு, சிவப்பு ஆடை அணிந்து தெற்கு திசை நோக்கி உணவு உண்ணவும்."
+                }
+            },
+            {
+                time: "2026-04-15T06:55:00+05:30",
+                title: { si: "හිස තෙල් ගෑම", ta: "தலைக்கு எண்ணெய் வைத்தல்" },
+                desc: {
+                    si: "අප්‍රේල් 15 බදාදා උදේ 6:55 ට දකුණු දිශාව බලා හිස තෙල් ගා ස්නානය කරන්න.",
+                    ta: "ஏப்ரல் 15 புதன்கிழமை காலை 6:55 மணிக்கு தெற்கு திசை நோக்கி தலைக்கு எண்ணெய் தேய்த்து நீராடவும்."
+                }
+            },
+            {
+                time: "2026-04-20T06:27:00+05:30",
+                title: { si: "රැකියාව සඳහා පිටත්ව යාම", ta: "வேலைக்குச் செல்லுதல்" },
+                desc: {
+                    si: "අප්‍රේල් 20 සඳුදා උදේ 6:27 ට සුදු පැහැති වස්ත්‍රාභරණයෙන් සැරසී දකුණු දිශාව බලා රැකියාව සඳහා පිටත්ව යන්න.",
+                    ta: "ஏப்ரல் 20 திங்கட்கிழமை காலை 6:27 மணிக்கு வெள்ளை ஆடை அணிந்து தெற்கு திசை நோக்கி வேலைக்குச் செல்லவும்."
+                }
+            },
+            {
+                time: "2026-04-23T09:01:00+05:30",
+                title: { si: "පැළ සිටුවීම", ta: "மரம் நடுதல்" },
+                desc: {
+                    si: "අප්‍රේල් 23 බ්‍රහස්පතින්දා උදේ 9:01 ට රන්වන් පැහැති වස්ත්‍රාභරණයෙන් සැරසී උතුරු දිශාව බලා පැළ සිටුවන්න.",
+                    ta: "ஏப்ரல் 23 வியாழக்கிழமை காலை 9:01 மணிக்கு பொன்னிற ஆடை அணிந்து வடக்கு திசை நோக்கி மரம் நடவும்."
+                }
             }
+        ];
 
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            if(timerEl) timerEl.innerHTML = `${d < 10 ? '0'+d : d}d ${h < 10 ? '0'+h : h}h ${m < 10 ? '0'+m : m}m ${s < 10 ? '0'+s : s}s`;
+        let currentLang = "si";
+        let countdownInterval;
+
+        // Function to get current time accurately
+        function getCurrentTime() {
+            return new Date().getTime();
         }
-    }
-    setInterval(updateTimers, 1000);
-    updateTimers(); // Initial call
-</script>
+
+        // Format Date to readable format
+        function formatDateTime(isoString) {
+            const dateObj = new Date(isoString);
+            return dateObj.toLocaleString("en-US", { 
+                timeZone: "Asia/Colombo", 
+                month: "short", 
+                day: "numeric", 
+                hour: "2-digit", 
+                minute: "2-digit",
+                hour12: true
+            });
+        }
+
+        // Render Cards to the DOM
+        function renderCards() {
+            const container = document.getElementById("cards-container");
+            container.innerHTML = "";
+            
+            const now = getCurrentTime();
+
+            nakathData.forEach((item, index) => {
+                const targetTime = new Date(item.time).getTime();
+                const isPassed = now > targetTime;
+
+                // Translations
+                const title = item.title[currentLang];
+                const displayTime = formatDateTime(item.time);
+                
+                const badgeText = isPassed 
+                    ? (currentLang === 'si' ? "පසු විය" : "முடிந்தது") 
+                    : (currentLang === 'si' ? "ඉදිරියට" : "வரவிருக்கும்");
+                
+                const badgeClass = isPassed ? "status-passed" : "status-upcoming";
+                const cardClass = isPassed ? "card passed" : "card";
+
+                const cardHTML = `
+                    <div class="${cardClass}" onclick="openModal(${index})">
+                        <h3>
+                            ${title} 
+                            <span class="status-badge ${badgeClass}">${badgeClass === 'status-passed' ? '✔' : '⏳'} ${badgeText}</span>
+                        </h3>
+                        <p class="time-text">🗓️ ${displayTime}</p>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+
+            // Update Main Title
+            document.getElementById("main-title").innerText = currentLang === "si" 
+                ? "🎉 2026 අලුත් අවුරුදු නැකැත් 🎉" 
+                : "🎉 2026 புத்தாண்டு சுப நேரங்கள் 🎉";
+        }
+
+        // Open Modal and Start Countdown
+        function openModal(index) {
+            clearInterval(countdownInterval);
+            
+            const item = nakathData[index];
+            document.getElementById("modal-title").innerText = item.title[currentLang];
+            document.getElementById("modal-desc").innerText = item.desc[currentLang];
+            
+            const targetTime = new Date(item.time).getTime();
+            const countdownEl = document.getElementById("modal-countdown");
+
+            const updateTimer = () => {
+                const now = getCurrentTime();
+                const distance = targetTime - now;
+
+                if (distance <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownEl.innerHTML = currentLang === 'si' ? "මෙම නැකත පසු වී ඇත ✅" : "இந்த நேரம் கடந்துவிட்டது ✅";
+                    countdownEl.style.color = "var(--success)";
+                    renderCards(); // Refresh grid to update passed status
+                    return;
+                }
+
+                countdownEl.style.color = "var(--gold)";
+                
+                // Time calculations
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                countdownEl.innerHTML = `${days}d : ${String(hours).padStart(2, '0')}h : ${String(minutes).padStart(2, '0')}m : ${String(seconds).padStart(2, '0')}s`;
+            };
+
+            document.getElementById("modal").style.display = "flex";
+            updateTimer(); // Run once immediately
+            countdownInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Close Modal
+        function closeModal() {
+            clearInterval(countdownInterval);
+            document.getElementById("modal").style.display = "none";
+        }
+
+        // Switch Language
+        function setLang(lang) {
+            currentLang = lang;
+            
+            // Update button styles
+            document.getElementById("btn-si").classList.toggle("active", lang === 'si');
+            document.getElementById("btn-ta").classList.toggle("active", lang === 'ta');
+
+            renderCards();
+        }
+
+        // Close modal when clicking outside the box
+        window.onclick = function(event) {
+            const modal = document.getElementById("modal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // CREATE BACKGROUND ANIMATION (KAVUM, KOKIS, BANANA, HONEY)
+        function createBackgroundSweets() {
+            // Emojis representing Kokis(🏵️), Kavum(🥮), Honey(🍯), Banana(🍌)
+            const sweetsArr = ['🏵️', '🥮', '🍯', '🍌', '🍂'];
+            const body = document.querySelector('body');
+            
+            // Generate 25 floating items
+            for (let i = 0; i < 25; i++) {
+                let sweet = document.createElement('div');
+                sweet.classList.add('bg-sweets');
+                sweet.innerText = sweetsArr[Math.floor(Math.random() * sweetsArr.length)];
+                
+                // Randomize position, animation duration, delay, and size
+                let leftPos = Math.random() * 100;
+                let animDuration = 10 + Math.random() * 20; // Falls between 10s and 30s
+                let delay = Math.random() * 15; // Random delay so they don't fall together
+                let fontSize = 1.5 + Math.random() * 1.5; // Random size
+
+                sweet.style.left = leftPos + 'vw';
+                sweet.style.animationDuration = animDuration + 's';
+                sweet.style.animationDelay = delay + 's';
+                sweet.style.fontSize = fontSize + 'rem';
+
+                body.appendChild(sweet);
+            }
+        }
+
+        // MUSIC CONTROLS LOGIC
+        let isMusicPlaying = false;
+        const bgMusic = document.getElementById("bg-music");
+        const musicBtn = document.getElementById("music-toggle");
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicBtn.innerText = "🔇";
+            } else {
+                bgMusic.play();
+                musicBtn.innerText = "🎵";
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        // Try to autoplay music on the first click anywhere on the website (Browser Autoplay Policy)
+        document.body.addEventListener('click', function() {
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicBtn.innerText = "🎵";
+                }).catch((error) => {
+                    console.log("Autoplay blocked by browser until user manually plays.");
+                });
+            }
+        }, { once: true }); // Only runs on the very first click
+
+        // Initialize App
+        renderCards();
+        createBackgroundSweets();
+
+        // Auto refresh UI every minute to check if a nakath has passed
+        setInterval(renderCards, 60000);
+
+    </script>
 </body>
 </html>
