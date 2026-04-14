@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team - YUVEN PW</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-card: rgba(255, 255, 255, 0.7); /* වීදුරු පෙනුම සඳහා */
+            --text-main: #1a1a1a; 
+            --text-muted: #4a4a4a; 
+            --accent: #c0392b; 
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans Sinhala', sans-serif;
+            /* පසුබිම් පින්තූරය මෙතැනින් මාරු කරන්න */
+            background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* පසුබිම අඳුරු කරන තට්ටුව (Overlay) */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255, 255, 255, 0.4); /* සුදු පැහැති filter එකක් */
+            backdrop-filter: blur(8px); /* පසුබිම බොඳ කිරීම */
+            z-index: -1;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            text-decoration: none;
+            background: var(--bg-card);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .back-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 80px 20px 50px;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #111;
+            text-shadow: 2px 2px 10px rgba(255,255,255,0.8);
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 60px;
+            font-weight: 400;
+        }
+
+        /* Team Grid */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding: 20px;
+        }
+
+        /* Team Member Card */
+        .member-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            
+            /* එකින් එක පේන ඇනිමේෂන් එක සඳහා */
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px) !important;
+            box-shadow: 0 15px 40px rgba(192, 57, 43, 0.15);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* සාමාජිකයාගේ පින්තූරය */
+        .member-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .member-card:hover .member-img {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+
+        .member-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        .member-role {
+            font-size: 0.95rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .member-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* විවිධ සාමාජිකයින්ට වෙනස් වෙලාවල් (Delay) ලබා දීම (එකින් එක පෙනීමට) */
+        .member-card:nth-child(1) { animation-delay: 0.2s; }
+        .member-card:nth-child(2) { animation-delay: 0.4s; }
+        .member-card:nth-child(3) { animation-delay: 0.6s; }
+        .member-card:nth-child(4) { animation-delay: 0.8s; }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .back-btn { top: 15px; left: 15px; padding: 8px 15px; font-size: 0.9rem; }
+            .container { padding-top: 100px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">⬅ Back to Home</a>
+
+    <div class="container">
+        <h1 class="page-title">Our Team</h1>
+        <p class="page-subtitle">මෙන්න අපගේ නිර්මාණාත්මක කණ්ඩායම</p>
+
+        <div class="team-grid">
+            
+            <div class="member-card">
+                <img src="https://i.pravatar.cc/150?img=11" alt="Member" class="member-img">
+                <h3 class="member-name">Yuven PW</h3>
+                <p class="member-role">Founder & Developer</p>
+                <p class="member-desc">වෙබ් අඩවි නිර්මාණය සහ මෘදුකාංග සංවර්ධනය පිළිබඳ ප්‍රධානියා.</p>
+            </div>
+
+            <div class="member-card">
+                <img src="https://i.pravatar.cc/150?img=33" alt="Member" class="member-img">
+                <h3 class="member-name">Kasun Perera</h3>
+                <p class="member-role">UI/UX Designer</p>
+                <p class="member-desc">වෙබ් අඩවියේ පෙනුම සහ පරිශීලක අත්දැකීම් නිර්මාණකරු.</p>
+            </div>
+
+            <div class="member-card">
+                <img src="https://i.pravatar.cc/150?img=12" alt="Member" class="member-img">
+                <h3 class="member-name">Naveen Silva</h3>
+                <p class="member-role">Content Creator</p>
+                <p class="member-desc">අන්තර්ගතය සහ තොරතුරු සකස් කිරීම භාරව කටයුතු කරයි.</p>
+            </div>
+
+            <div class="member-card">
+                <img src="https://i.pravatar.cc/150?img=53" alt="Member" class="member-img">
+                <h3 class="member-name">Sandun Fernando</h3>
+                <p class="member-role">Game Modder</p>
+                <p class="member-desc">ගේම් මොඩිෆිකේෂන් සහ අමතර නිර්මාණ කටයුතු සිදු කරයි.</p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
