@@ -18,7 +18,7 @@
 
 ## 🚀 Live Demo
 <div align="center">
-  <a href="https://zerbot444-collab.github.io/NEW-YEAR-SITE-2026/">
+  <a href="https://festivalnewyear2026.netlify.app/">
     <img src="https://img.shields.io/badge/🔴_CLICK_HERE_TO_VIEW_LIVE_SITE-FF0000?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Live Demo" />
   </a>
 </div>
