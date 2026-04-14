@@ -1,6 +1,6 @@
 # 🎉 2026 Aurudu Nakath Pro+ 
 
-![Users](https://img.shields.io/badge/Active_Users-457-brightgreen?style=for-the-badge)
+[![Active Users](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fzerbot444-collab%2FNEW-YEAR-SITE-2026&count_bg=%2300E676&title_bg=%231A0B0C&icon=&icon_color=%23E7E7E7&title=Views&edge_flat=true)](https://github.com/zerbot444-collab/NEW-YEAR-SITE-2026)
 ![Usage Rate](https://img.shields.io/badge/Usage_Rate-100%25-blue?style=for-the-badge)
 
 <div align="center">
@@ -8,7 +8,7 @@
 </div>
 
 ## 📌 About The Project
-A modern, beautiful, and fully responsive web application built to easily view the **2026 Sinhala and Tamil New Year Auspicious Times (අලුත් අවුරුදු නැකැත්)**. 
+A modern, beautiful, and fully responsive web application built to easily view the **2026 Sinhala and Tamil New Year Auspicious Times (අලුත් අවුරුදු නැකැත්)**.  
 
 🎉 **Huge Milestone:** Thank you for the amazing support! We recently hit a milestone of **457 users** with a **100% usage rate**! ❤️
 
