@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Gaming Mods Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+        :root {
+            --bg-color: #0f0f13;
+            --card-bg: #1c1c24;
+            --neon-green: #00ff88;
+            --neon-blue: #00e5ff;
+            --text-main: #ffffff;
+            --text-muted: #a0a0b0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        .bg-glow {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,136,0.05) 0%, rgba(0,0,0,0) 50%);
+            z-index: -1;
+            animation: pulseBg 10s infinite alternate;
+        }
+
+        @keyframes pulseBg {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* Header Animation */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            animation: slideDown 0.8s ease-out;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Game Grid */
+        .grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            width: 280px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: popIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        /* Staggered Animations for cards */
+        .game-card:nth-child(1) { animation-delay: 0.2s; }
+        .game-card:nth-child(2) { animation-delay: 0.4s; }
+        .game-card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes popIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .game-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            border-color: var(--neon-green);
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .game-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .game-card h2 { margin: 10px 0; font-size: 1.5rem; }
+        .game-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+
+        .btn-open {
+            background: linear-gradient(45deg, var(--neon-green), #00b359);
+            border: none;
+            padding: 10px 25px;
+            color: #000;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        /* Modal (Popup) Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.2);
+            transform: scale(0.5);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active { display: flex; }
+        .modal-overlay.active .modal-content { transform: scale(1); opacity: 1; }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-btn:hover { color: var(--neon-green); transform: rotate(90deg); }
+
+        .modal-title { font-size: 2rem; margin-bottom: 20px; color: var(--neon-blue); }
+
+        /* Download Option Buttons */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .opt-btn {
+            background: #2a2a36;
+            border: 2px solid transparent;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .opt-btn:hover {
+            background: var(--neon-green);
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Footer / Credits */
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-muted);
+            animation: fadeIn 2s;
+        }
+
+        .credit-text {
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            font-weight: bold;
+            letter-spacing: 1px;
+            animation: floatText 3s ease-in-out infinite;
+        }
+
+        @keyframes floatText {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); text-shadow: 0 0 10px var(--neon-green); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <header>
+        <h1>Mod & APK Hub</h1>
+        <p>Download the best mods, skins, and textures.</p>
+    </header>
+
+    <main class="grid-container">
+        <div class="game-card" onclick="openModal('Minecraft')">
+            <img src="https://img.freepik.com/premium-photo/dirt-block-with-grass-game-style_146508-30.jpg" alt="Minecraft" class="game-img">
+            <h2>Minecraft</h2>
+            <p>Pocket Edition / Bedrock</p>
+            <button class="btn-open">View Options</button>
+        </div>
+
+        <div class="game-card" onclick="openModal('GTA San Andreas')">
+            <img src="https://img.freepik.com/free-vector/neon-style-coming-soon-glowing-background-design_1017-25516.jpg" alt="GTA" class="game-img">
+            <h2>GTA San Andreas</h2>
+            <p>Cleo Mods & Cars</p>
+            <button class="btn-open">View Options</button>
+        </div>
+
+        <div class="game-card" onclick="openModal('Roblox')">
+            <img src="https://img.freepik.com/free-vector/abstract-gaming-background-with-neon-shapes_1017-32111.jpg" alt="Roblox" class="game-img">
+            <h2>Roblox</h2>
+            <p>Scripts & Executors</p>
+            <button class="btn-open">View Options</button>
+        </div>
+    </main>
+
+    <div id="downloadModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal(event)">&times;</span>
+            <h2 class="modal-title" id="modalGameName">Game Name</h2>
+            <p>Select what you want to download:</p>
+            
+            <div class="options-grid">
+                <button class="opt-btn" onclick="startDownload('APK')">📱 <span>APK</span></button>
+                <button class="opt-btn" onclick="startDownload('Mods')">🛠️ <span>Mods</span></button>
+                <button class="opt-btn" onclick="startDownload('Textures')">🎨 <span>Textures</span></button>
+                <button class="opt-btn" onclick="startDownload('Skins')">👕 <span>Skins</span></button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Created with ❤️ for Gamers</p>
+        <p class="credit-text">Credit goes to vishath kaushika </p>
+    </footer>
+
+    <script>
+        // Modal functions
+        const modal = document.getElementById('downloadModal');
+        const modalTitle = document.getElementById('modalGameName');
+
+        function openModal(gameName) {
+            modalTitle.innerText = gameName + " Downloads";
+            modal.classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (event) {
+                // Prevent closing if clicked inside the content box
+                if (event.target.classList.contains('modal-content')) return;
+            }
+            modal.classList.remove('active');
+        }
+
+        function startDownload(type) {
+            const game = modalTitle.innerText.replace(" Downloads", "");
+            alert(`You selected ${type} for ${game}!\n(Link eka mekata set karanna puluwan)`);
+            // ඔයාට ඇත්ත ලින්ක් එකකට යවන්න ඕනෙ නම් මෙහෙම දාන්න පුළුවන්:
+            // window.location.href = "ඔයාගේ ලින්ක් එක";
+        }
+    </script>
+</body>
+</html>
