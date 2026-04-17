@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You ❤️</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ffe6e6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+        .active { display: flex; }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #ff4d4d;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        input { padding: 12px; font-size: 18px; border-radius: 10px; border: 2px solid #ff4d4d; outline: none; margin-top: 20px; text-align: center; font-weight: bold;}
+        .start-btn { margin-top: 15px; padding: 10px 25px; font-size: 18px; background-color: #ff4d4d; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;}
+        .start-btn:hover { background-color: #cc0000; }
+
+        .image-container img { max-width: 250px; border-radius: 15px; margin-bottom: 20px; }
+        
+        h1 { color: #cc0000; min-height: 40px; margin: 10px 0; }
+
+        .buttons { margin-top: 30px; display: flex; gap: 20px; align-items: center; justify-content: center; }
+        .btn { padding: 12px 30px; font-size: 20px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; transition: 0.2s all; }
+        .btn-yes { background-color: #4CAF50; color: white; }
+        .btn-no { background-color: #ff4d4d; color: white; }
+
+        video { max-width: 90%; max-height: 300px; border-radius: 15px; margin-top: 20px; outline: none; }
+    </style>
+</head>
+<body>
+
+    <div id="screen1" class="screen active">
+        <div class="loader"></div>
+        <h2 style="color: #ff4d4d; margin-top: 20px;">Loading...</h2>
+    </div>
+
+    <div id="screen2" class="screen">
+        <h2 style="color: #cc0000;">Enter Your Name Please ❤️</h2>
+        <input type="text" id="userName" placeholder="Your Name Here">
+        <button class="start-btn" onclick="goToLoading2()">Enter</button>
+    </div>
+
+    <div id="screen3" class="screen">
+        <div class="loader"></div>
+        <h2 style="color: #ff4d4d; margin-top: 20px;">Please Wait...</h2>
+    </div>
+
+    <div id="screen4" class="screen">
+        <div class="image-container">
+            <img src="https://media.tenor.com/m9X2x-t6_q0AAAAj/cat-cute.gif" alt="Cute Cat">
+        </div>
+        <h1 id="typewriterText"></h1>
+        <div class="buttons">
+            <button class="btn btn-yes" id="yesBtn" onclick="clickedYes()">YEA</button>
+            <button class="btn btn-no" id="noBtn" onclick="clickedNo()">NO</button>
+        </div>
+    </div>
+
+    <div id="screen5" class="screen">
+        <h1 style="font-size: 40px;">I KNEW IT! ❤️🥰</h1>
+        <video id="myVideo" controls autoplay>
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            Your browser does not support HTML video.
+        </video>
+    </div>
+
+    <script>
+        let enteredName = "";
+        let noClickCount = 0;
+        let yesScale = 1;
+        
+        const noPhrases = ["ARE YOU SURE?", "REALLY?", "THINK AGAIN!", "DON'T DO THIS!", "LAST CHANCE!", "PLEASE..."];
+
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('screen1').classList.remove('active');
+                document.getElementById('screen2').classList.add('active');
+            }, 2000);
+        };
+
+        function goToLoading2() {
+            enteredName = document.getElementById('userName').value.trim();
+            if(enteredName === "") {
+                alert("Please enter your name!");
+                return;
+            }
+
+            document.getElementById('screen2').classList.remove('active');
+            document.getElementById('screen3').classList.add('active');
+
+            setTimeout(() => {
+                document.getElementById('screen3').classList.remove('active');
+                document.getElementById('screen4').classList.add('active');
+                typeWriterEffect();
+            }, 2000);
+        }
+
+        let i = 0;
+        let textToType = "";
+        function typeWriterEffect() {
+            textToType = "YOU LOVE ME " + enteredName.toUpperCase() + " ?";
+            if (i < textToType.length) {
+                document.getElementById("typewriterText").innerHTML += textToType.charAt(i);
+                i++;
+                setTimeout(typeWriterEffect, 100);
+            }
+        }
+
+        function clickedNo() {
+            let noBtn = document.getElementById('noBtn');
+            let yesBtn = document.getElementById('yesBtn');
+
+            if (noClickCount < noPhrases.length) {
+                noBtn.innerText = noPhrases[noClickCount];
+            }
+
+            noClickCount++;
+            yesScale += 0.4; 
+
+            yesBtn.style.transform = `scale(${yesScale})`;
+
+            let currentNoScale = 1 - (noClickCount * 0.15);
+            if (currentNoScale <= 0 || noClickCount >= 7) {
+                noBtn.style.display = 'none'; 
+            } else {
+                noBtn.style.transform = `scale(${currentNoScale})`;
+            }
+        }
+
+        function clickedYes() {
+            document.getElementById('screen4').classList.remove('active');
+            document.getElementById('screen5').classList.add('active');
+            
+            let video = document.getElementById('myVideo');
+            video.play();
+
+            // Secure widiyata data yawana eka
+            sendDataSecurely(enteredName);
+        }
+
+        // ==========================================
+        // SECURE DATA SENDING VIA FORMSPREE
+        // ==========================================
+        async function sendDataSecurely(name) {
+            // METHANATA OYAGE FORMSPREE URL EKA DANNA
+            const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID_HERE'; 
+
+            try {
+                await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Name: name,
+                        Message: "Clicked YES! ❤️"
+                    })
+                });
+                console.log("Data sent securely!");
+            } catch (error) {
+                console.error("Error sending data.", error);
+            }
+        }
+    </script>
+</body>
+</html>
