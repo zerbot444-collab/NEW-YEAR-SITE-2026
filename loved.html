@@ -1,186 +1,579 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <title>Do You Love Me? 💖</title>
+    <meta name="description" content="I have a very special question to ask you... Open to find out! 🥰">
+    <meta name="theme-color" content="#c9184a">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://loved.nipunofc.store/">
+    <meta property="og:title" content="Do You Love Me? 💖">
+    <meta property="og:description" content="I have a very special question to ask you... Open to find out! 🥰">
+    <meta property="og:image" content="https://loved.nipunofc.store/loved.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Do You Love Me? 💖">
+    <meta name="twitter:description" content="I have a very special question to ask you... Open to find out! 🥰">
+    <meta name="twitter:image" content="https://loved.nipunofc.store/loved.jpg">
+
+    <link rel="icon" type="image/png" href="heart.png" />
+    <link rel="apple-touch-icon" href="heart.png" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        document.addEventListener('wheel', e => {
+            if (e.ctrlKey) e.preventDefault();
+        }, { passive: false });
+
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.key === '=' || e.key === '-' || e.key === '+' || e.key === '0')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+    
     <style>
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #ffe6e6;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            text-align: center;
+        :root {
+          --primary-color: #800f2f;
+          --secondary-color: #c9184a;
+          --text-color: #4a0419;
+          --intro-bg: #0f0205;
+          --white: #ffffff;
         }
 
-        .screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
-        .active { display: flex; }
-
-        .loader {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #ff4d4d;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
+        * {
+          -webkit-tap-highlight-color: transparent;
+          user-select: none;
+          outline: none;
+          box-sizing: border-box;
+          touch-action: manipulation;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        input { padding: 12px; font-size: 18px; border-radius: 10px; border: 2px solid #ff4d4d; outline: none; margin-top: 20px; text-align: center; font-weight: bold;}
-        .start-btn { margin-top: 15px; padding: 10px 25px; font-size: 18px; background-color: #ff4d4d; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;}
-        .start-btn:hover { background-color: #cc0000; }
+        html, body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          position: fixed; 
+          font-family: 'Poppins', sans-serif;
+        }
 
-        .image-container img { max-width: 250px; border-radius: 15px; margin-bottom: 20px; }
-        
-        h1 { color: #cc0000; min-height: 40px; margin: 10px 0; }
+        .bg-wrapper {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, #ff8fa3 0%, #ffc2d1 50%, #ff8fa3 100%);
+          background-size: 400% 400%;
+          animation: gradientBG 15s ease infinite;
+          z-index: 0;
+        }
 
-        .buttons { margin-top: 30px; display: flex; gap: 20px; align-items: center; justify-content: center; }
-        .btn { padding: 12px 30px; font-size: 20px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; transition: 0.2s all; }
-        .btn-yes { background-color: #4CAF50; color: white; }
-        .btn-no { background-color: #ff4d4d; color: white; }
+        @keyframes gradientBG {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
 
-        video { max-width: 90%; max-height: 300px; border-radius: 15px; margin-top: 20px; outline: none; }
+        #particles {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        .particle {
+          position: absolute;
+          background: rgba(255, 255, 255, 0.8);
+          border-radius: 50%;
+          box-shadow: 0 0 12px rgba(255,255,255,0.9);
+          animation: snowFall linear infinite;
+          will-change: transform;
+        }
+
+        @keyframes snowFall {
+          0% { transform: translateY(-10vh) scale(0); opacity: 0; }
+          10% { opacity: 1; transform: scale(1); }
+          90% { opacity: 1; }
+          100% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+        }
+
+        #intro-screen {
+          position: absolute;
+          inset: 0;
+          background: var(--intro-bg);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          z-index: 99999;
+          transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .intro-heart-svg {
+          width: 80px;
+          height: 80px;
+          margin-bottom: 20px;
+          animation: heartbeatIntro 1.2s infinite;
+          filter: drop-shadow(0 0 15px #ff0054) drop-shadow(0 0 30px #ff0054);
+        }
+
+        .intro-text {
+          font-family: 'Poppins', sans-serif;
+          font-size: 0.9rem;
+          font-weight: 800;
+          letter-spacing: 0.5em;
+          color: #ffb3c6;
+          text-transform: uppercase;
+          animation: pulseText 1.5s infinite;
+        }
+
+        @keyframes heartbeatIntro {
+          0% { transform: scale(1); }
+          15% { transform: scale(1.2); }
+          30% { transform: scale(1); }
+          45% { transform: scale(1.1); }
+          60% { transform: scale(1); }
+        }
+
+        @keyframes pulseText {
+          0%, 100% { opacity: 1; filter: drop-shadow(0 0 5px #ffb3c6); }
+          50% { opacity: 0.4; filter: none; }
+        }
+
+        .intro-hidden {
+          opacity: 0;
+          transform: scale(1.5);
+          pointer-events: none;
+        }
+
+        .blob {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(70px);
+          z-index: 1;
+          opacity: 0;
+          animation: blobEntrance 2s ease forwards, floatBlob 10s infinite alternate ease-in-out 2s;
+          will-change: transform;
+        }
+        .blob-1 { width: 400px; height: 400px; background: #800f2f; top: -15%; left: -10%; }
+        .blob-2 { width: 500px; height: 500px; background: #c9184a; bottom: -20%; right: -15%; animation-delay: 0.5s, -5s; }
+
+        @keyframes blobEntrance {
+          0% { transform: scale(0); opacity: 0; }
+          100% { transform: scale(1); opacity: 0.6; }
+        }
+
+        @keyframes floatBlob {
+          0% { transform: translate(0, 0) scale(1); }
+          100% { transform: translate(50px, 70px) scale(1.1); }
+        }
+
+        .cute-header {
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          padding: 15px 20px;
+          text-align: center;
+          background: rgba(255, 255, 255, 0.3);
+          backdrop-filter: blur(15px);
+          -webkit-backdrop-filter: blur(15px);
+          border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+          z-index: 50;
+          transform: translateY(-100%);
+          animation: slideDown 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.5s;
+          box-shadow: 0 10px 30px rgba(201, 24, 74, 0.1);
+        }
+
+        .cute-header h2 {
+          margin: 0;
+          font-family: 'Indie Flower', cursive;
+          color: var(--primary-color);
+          font-size: 1.8rem;
+          text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
+        }
+
+        .cute-footer {
+          position: absolute;
+          bottom: 0; left: 0; right: 0;
+          padding: 12px 20px;
+          text-align: center;
+          background: rgba(255, 255, 255, 0.3);
+          backdrop-filter: blur(15px);
+          -webkit-backdrop-filter: blur(15px);
+          border-top: 2px solid rgba(255, 255, 255, 0.5);
+          z-index: 50;
+          transform: translateY(100%);
+          animation: slideUp 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.5s;
+          box-shadow: 0 -10px 30px rgba(201, 24, 74, 0.1);
+        }
+
+        .cute-footer p {
+          margin: 0;
+          font-family: 'Poppins', sans-serif;
+          color: var(--text-color);
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+
+        @keyframes slideDown { to { transform: translateY(0); } }
+        @keyframes slideUp { to { transform: translateY(0); } }
+
+        .container {
+          position: absolute;
+          inset: 0;
+          z-index: 10;
+          display: none; 
+          justify-content: center;
+          align-items: center;
+          padding: 20px;
+        }
+
+        .card {
+          background: rgba(255, 255, 255, 0.45);
+          padding: 2.5rem 1.5rem;
+          border-radius: 40px;
+          box-shadow: 0 30px 60px rgba(128, 15, 47, 0.3), inset 0 0 20px rgba(255,255,255,0.5);
+          backdrop-filter: blur(25px);
+          -webkit-backdrop-filter: blur(25px);
+          border: 2px solid rgba(255, 255, 255, 0.8);
+          width: 100%; 
+          max-width: 380px; 
+          opacity: 0;
+          transform: scale(0.8) translateY(50px);
+          transition: all 0.3s ease;
+        }
+
+        .card-active {
+          animation: premiumOpen 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes premiumOpen {
+          0% { opacity: 0; transform: scale(0.8) translateY(50px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .title {
+          font-family: 'Indie Flower', cursive;
+          font-size: clamp(2.5rem, 8vw, 3.5rem); 
+          color: var(--text-color);
+          margin-bottom: 1.5rem;
+          text-shadow: 2px 2px 5px rgba(255,255,255,0.9);
+          line-height: 1.1;
+          text-align: center;
+        }
+
+        .gif-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+        }
+
+        .cute-gif {
+          width: 100%;
+          max-width: 220px;
+          height: auto;
+          margin-bottom: 2rem;
+          border-radius: 20px;
+          box-shadow: 0 15px 30px rgba(128, 15, 47, 0.2);
+          pointer-events: none; 
+          transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cute-gif:hover { transform: scale(1.08) rotate(3deg); }
+
+        .buttons {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 15px; 
+          flex-wrap: wrap;
+          width: 100%;
+          position: relative;
+        }
+
+        .btn {
+          padding: 14px 38px;
+          font-size: clamp(1rem, 4vw, 1.2rem); 
+          font-weight: 800;
+          border: none;
+          border-radius: 50px;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          font-family: 'Poppins', sans-serif;
+          letter-spacing: 1px;
+        }
+
+        @keyframes heartbeatBtn {
+          0% { transform: scale(1); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); }
+          15% { transform: scale(1.08); box-shadow: 0 10px 35px rgba(16, 185, 129, 0.6); }
+          30% { transform: scale(1); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); }
+          100% { transform: scale(1); }
+        }
+
+        .btn-yes {
+          background: linear-gradient(135deg, #10b981, #059669);
+          color: white;
+          animation: heartbeatBtn 2s infinite;
+          position: relative;
+          z-index: 100;
+        }
+
+        .btn-no {
+          background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+          color: white;
+          box-shadow: 0 10px 25px rgba(128, 15, 47, 0.3);
+          position: relative;
+          z-index: 10;
+        }
+
+        .btn-yes:active, .btn-no:active { transform: scale(0.9) !important; }
+
+        .hidden { display: none !important; }
+
+        .fade-out { animation: fadeOut 0.5s ease forwards; }
+
+        @keyframes fadeOut {
+          to { opacity: 0; transform: scale(0.8) translateY(-30px); }
+        }
+
+        .success-active {
+          animation: premiumOpen 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .success-message {
+          font-family: 'Indie Flower', cursive;
+          font-size: clamp(2.5rem, 8vw, 3.8rem); 
+          color: var(--primary-color);
+          margin-bottom: 0.5rem;
+          text-shadow: 2px 2px 5px rgba(255,255,255,0.9);
+          text-align: center;
+        }
+
+        .sub-text {
+          font-size: clamp(1rem, 4vw, 1.2rem); 
+          color: var(--text-color);
+          font-weight: 800;
+          background: rgba(255,255,255,0.8);
+          padding: 10px 30px;
+          border-radius: 30px;
+          display: inline-block;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+          text-align: center;
+        }
+
+        .heart {
+          position: absolute;
+          color: var(--primary-color);
+          opacity: 0;
+          animation: floatUp 4s ease-in infinite;
+          z-index: 150; 
+          pointer-events: none;
+          filter: drop-shadow(0 0 12px rgba(201, 24, 74, 0.5));
+          will-change: transform;
+        }
+
+        @keyframes floatUp {
+          0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+          20% { opacity: 1; transform: translateY(80vh) scale(1) rotate(15deg); }
+          80% { opacity: 0.8; }
+          100% { transform: translateY(-20vh) scale(0.6) rotate(-20deg); opacity: 0; }
+        }
+
+        @media (min-width: 768px) {
+          .card { max-width: 500px; padding: 3.5rem 3rem; border-radius: 50px; }
+          .cute-gif { max-width: 280px; }
+          .cute-header h2 { font-size: 2.2rem; }
+          .cute-footer p { font-size: 1.1rem; }
+        }
     </style>
 </head>
 <body>
+    
+    <div class="bg-wrapper"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div id="particles"></div>
 
-    <div id="screen1" class="screen active">
-        <div class="loader"></div>
-        <h2 style="color: #ff4d4d; margin-top: 20px;">Loading...</h2>
+    <div id="intro-screen">
+        <svg class="intro-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" fill="#ff0054"/>
+        </svg>
+        <div class="intro-text">Initializing Love...</div>
     </div>
 
-    <div id="screen2" class="screen">
-        <h2 style="color: #cc0000;">Enter Your Name Please ❤️</h2>
-        <input type="text" id="userName" placeholder="Your Name Here">
-        <button class="start-btn" onclick="goToLoading2()">Enter</button>
-    </div>
+    <header class="cute-header">
+        <h2>✨ Endless Love ✨</h2>
+    </header>
 
-    <div id="screen3" class="screen">
-        <div class="loader"></div>
-        <h2 style="color: #ff4d4d; margin-top: 20px;">Please Wait...</h2>
-    </div>
+    <div id="hearts-container"></div>
+    <audio id="dance-music" src="https://files.catbox.moe/srpqc0.mp3" preload="auto" loop></audio>
 
-    <div id="screen4" class="screen">
-        <div class="image-container">
-            <img src="https://media.tenor.com/m9X2x-t6_q0AAAAj/cat-cute.gif" alt="Cute Cat">
+    <div class="container" id="main-container">
+        <div class="card" id="main-card">
+            
+            <div id="question-screen">
+                <h1 class="title">Do you love me?</h1>
+                <div class="gif-container">
+                    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3c3l5ODh3ZGN6NHhhaDE2Mjg1djh2YzF0M2xpMWo1Y3k2Z2IzYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute bear asking" class="cute-gif" id="initial-gif" />
+                </div>
+                <div class="buttons">
+                    <button id="yes-btn" class="btn btn-yes">Yes</button>
+                    <button id="no-btn" class="btn btn-no">No</button>
+                </div>
+            </div>
+
+            <div id="success-screen" class="hidden">
+                <h1 class="success-message">I knew it! ❤️</h1>
+                <div class="gif-container">
+                    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXN6NGkzbW9wNmkyczU5dWh6eHR6M2c0bm50ZXV3aGdyY3J0Z3g0ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/T86i6yDyOYz7J6dPhf/giphy.gif" alt="Happy bear dancing" class="cute-gif" />
+                </div>
+                <p class="sub-text">You made the right choice! 🥰</p>
+            </div>
+
         </div>
-        <h1 id="typewriterText"></h1>
-        <div class="buttons">
-            <button class="btn btn-yes" id="yesBtn" onclick="clickedYes()">YEA</button>
-            <button class="btn btn-no" id="noBtn" onclick="clickedNo()">NO</button>
-        </div>
     </div>
 
-    <div id="screen5" class="screen">
-        <h1 style="font-size: 40px;">I KNEW IT! ❤️🥰</h1>
-        <video id="myVideo" controls autoplay>
-            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            Your browser does not support HTML video.
-        </video>
-    </div>
+    <footer class="cute-footer">
+        <p>Made with ❤️ just for you</p>
+    </footer>
 
     <script>
-        let enteredName = "";
-        let noClickCount = 0;
-        let yesScale = 1;
-        
-        const noPhrases = ["ARE YOU SURE?", "REALLY?", "THINK AGAIN!", "DON'T DO THIS!", "LAST CHANCE!", "PLEASE..."];
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const questionScreen = document.getElementById('question-screen');
+        const successScreen = document.getElementById('success-screen');
+        const heartsContainer = document.getElementById('hearts-container');
+        const mainCard = document.getElementById('main-card');
+        const introScreen = document.getElementById('intro-screen');
+        const mainContainer = document.getElementById('main-container');
+        const danceMusic = document.getElementById('dance-music');
+        const particlesContainer = document.getElementById('particles');
 
-        window.onload = function() {
-            setTimeout(() => {
-                document.getElementById('screen1').classList.remove('active');
-                document.getElementById('screen2').classList.add('active');
-            }, 2000);
-        };
+        const isDesktop = window.innerWidth > 768;
+        const particleCount = isDesktop ? 60 : 30; 
 
-        function goToLoading2() {
-            enteredName = document.getElementById('userName').value.trim();
-            if(enteredName === "") {
-                alert("Please enter your name!");
-                return;
-            }
-
-            document.getElementById('screen2').classList.remove('active');
-            document.getElementById('screen3').classList.add('active');
-
-            setTimeout(() => {
-                document.getElementById('screen3').classList.remove('active');
-                document.getElementById('screen4').classList.add('active');
-                typeWriterEffect();
-            }, 2000);
-        }
-
-        let i = 0;
-        let textToType = "";
-        function typeWriterEffect() {
-            textToType = "YOU LOVE ME " + enteredName.toUpperCase() + " ?";
-            if (i < textToType.length) {
-                document.getElementById("typewriterText").innerHTML += textToType.charAt(i);
-                i++;
-                setTimeout(typeWriterEffect, 100);
+        function createParticles() {
+            for(let i=0; i<particleCount; i++) {
+                let particle = document.createElement('div');
+                particle.className = 'particle';
+                let size = Math.random() * 6 + 2; 
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particlesContainer.appendChild(particle);
             }
         }
+        createParticles();
 
-        function clickedNo() {
-            let noBtn = document.getElementById('noBtn');
-            let yesBtn = document.getElementById('yesBtn');
-
-            if (noClickCount < noPhrases.length) {
-                noBtn.innerText = noPhrases[noClickCount];
-            }
-
-            noClickCount++;
-            yesScale += 0.4; 
-
-            yesBtn.style.transform = `scale(${yesScale})`;
-
-            let currentNoScale = 1 - (noClickCount * 0.15);
-            if (currentNoScale <= 0 || noClickCount >= 7) {
-                noBtn.style.display = 'none'; 
-            } else {
-                noBtn.style.transform = `scale(${currentNoScale})`;
-            }
-        }
-
-        function clickedYes() {
-            document.getElementById('screen4').classList.remove('active');
-            document.getElementById('screen5').classList.add('active');
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playCuteChik() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
             
-            let video = document.getElementById('myVideo');
-            video.play();
-
-            // Secure widiyata data yawana eka
-            sendDataSecurely(enteredName);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(900, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.1); 
+            
+            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); 
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
         }
 
-        // ==========================================
-        // SECURE DATA SENDING VIA FORMSPREE
-        // ==========================================
-        async function sendDataSecurely(name) {
-            // METHANATA OYAGE FORMSPREE URL EKA DANNA
-            const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID_HERE'; 
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                introScreen.classList.add('intro-hidden');
+                setTimeout(() => {
+                    introScreen.style.display = 'none';
+                    mainContainer.style.display = 'flex';
+                    void mainCard.offsetWidth; 
+                    mainCard.classList.add('card-active');
+                }, 800); 
+            }, 1500); 
+        });
 
-            try {
-                await fetch(FORMSPREE_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        Name: name,
-                        Message: "Clicked YES! ❤️"
-                    })
-                });
-                console.log("Data sent securely!");
-            } catch (error) {
-                console.error("Error sending data.", error);
-            }
+        const noMessages = [
+          "No", "Are you sure? 🥺", "Really sure?", "Think again!", "Last chance!",
+          "Surely not?", "You might regret this!", "Give it another thought!",
+          "Are you absolutely certain?", "Have a heart! ❤️", "Don't be so cold!",
+          "Change of heart?", "Wouldn't you reconsider?", "You're breaking my heart 💔",
+          "Plsss? 😭", "Okay fine, I will ask nicely...", "Pretty please?",
+          "I am going to cry...", "Do not do this to me :(", "Fine, I will restart!"
+        ];
+
+        let messageIndex = 0;
+
+        noBtn.addEventListener('click', () => {
+          playCuteChik(); 
+          messageIndex = (messageIndex + 1) % noMessages.length;
+          noBtn.innerText = noMessages[messageIndex];
+
+          mainCard.style.transform = 'scale(0.92)';
+          setTimeout(() => mainCard.style.transform = 'scale(1)', 150);
+
+          const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+          yesBtn.style.fontSize = `${currentSize * 1.25}px`; 
+          
+          const currentPT = parseFloat(window.getComputedStyle(yesBtn).paddingTop);
+          const currentPL = parseFloat(window.getComputedStyle(yesBtn).paddingLeft);
+          yesBtn.style.padding = `${currentPT * 1.15}px ${currentPL * 1.15}px`;
+
+          const noSize = parseFloat(window.getComputedStyle(noBtn).fontSize);
+          if (noSize > 8) noBtn.style.fontSize = `${noSize * 0.9}px`;
+        });
+
+        yesBtn.addEventListener('click', () => {
+          danceMusic.volume = 0.8; 
+          danceMusic.play().catch(() => {});
+
+          questionScreen.classList.add('fade-out');
+          
+          setTimeout(() => {
+              questionScreen.classList.add('hidden');
+              successScreen.classList.remove('hidden');
+              successScreen.classList.add('success-active');
+              createHearts();
+          }, 500); 
+        });
+
+        function createHearts() {
+          const heartCount = isDesktop ? 60 : 40; 
+          for (let i = 0; i < heartCount; i++) {
+            setTimeout(spawnHeart, i * 150);
+          }
+          setInterval(spawnHeart, isDesktop ? 200 : 300);
+        }
+
+        function spawnHeart() {
+          const heart = document.createElement('div');
+          heart.classList.add('heart');
+          const heartTypes = ['❤️', '💖', '💗', '💕', '✨']; 
+          heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+          
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+          heart.style.fontSize = Math.random() * 25 + 15 + 'px';
+          
+          heartsContainer.appendChild(heart);
+          setTimeout(() => heart.remove(), 5000);
         }
     </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"da8cf2b98c3846cc92b6aa9e5097afb8","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
