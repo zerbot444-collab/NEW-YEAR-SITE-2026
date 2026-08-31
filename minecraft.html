@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUZER — Craft World</title>
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --ink:#edebf5;
+    --green:#5cbf4a;
+    --green-dark:#3a8a2c;
+    --dirt:#7a5230;
+    --line:rgba(237,235,245,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    width:100%;height:100%;
+    background:#000;
+    overflow:hidden;
+    font-family:'Segoe UI',Verdana,sans-serif;
+  }
+  canvas{display:block;}
+
+  /* ---------- LOADER ---------- */
+  #loader{
+    position:fixed;inset:0;
+    background:linear-gradient(180deg,#1a2e12 0%,#0a0a0f 100%);
+    z-index:999;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    transition:opacity 0.7s ease, visibility 0.7s;
+  }
+  #loader.done{opacity:0;visibility:hidden;pointer-events:none;}
+  .load-blocks{
+    display:flex;
+    gap:6px;
+    margin-bottom:1.4rem;
+  }
+  .load-blocks span{
+    width:22px;height:22px;
+    background:var(--green);
+    box-shadow: inset -4px -4px 0 rgba(0,0,0,0.25), inset 4px 4px 0 rgba(255,255,255,0.15);
+    animation:blockBounce 1s ease-in-out infinite;
+  }
+  .load-blocks span:nth-child(1){animation-delay:0s;background:#5cbf4a;}
+  .load-blocks span:nth-child(2){animation-delay:0.12s;background:#7a5230;}
+  .load-blocks span:nth-child(3){animation-delay:0.24s;background:#9a9a9a;}
+  .load-blocks span:nth-child(4){animation-delay:0.36s;background:#dccb7a;}
+  @keyframes blockBounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-16px);}
+  }
+  .load-title{
+    font-weight:700;
+    letter-spacing:0.06em;
+    color:var(--ink);
+    font-size:1.3rem;
+    text-shadow:2px 2px 0 rgba(0,0,0,0.4);
+  }
+  .load-sub{
+    margin-top:0.6rem;
+    font-size:0.8rem;
+    color:#a8b8a0;
+    letter-spacing:0.05em;
+  }
+  .load-bar-track{
+    margin-top:1.4rem;
+    width:260px;height:10px;
+    background:#141414;
+    border:2px solid #000;
+    box-shadow:inset 0 0 0 2px #333;
+  }
+  .load-bar-fill{
+    height:100%;width:0%;
+    background:repeating-linear-gradient(90deg,#5cbf4a 0 8px,#4ea63f 8px 16px);
+    transition:width 0.2s ease;
+  }
+
+  /* ---------- OVERLAY UI ---------- */
+  #ui{
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:20;
+    opacity:0;
+    transition:opacity 0.6s ease;
+  }
+  #ui.show{opacity:1;}
+
+  #topbar{
+    position:absolute;top:0;left:0;right:0;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:1rem 1.4rem;
+  }
+  #topbar a{
+    pointer-events:auto;
+    color:var(--ink);
+    text-decoration:none;
+    font-size:0.78rem;
+    letter-spacing:0.05em;
+    background:rgba(0,0,0,0.45);
+    border:1px solid var(--line);
+    padding:0.5rem 0.9rem;
+    border-radius:4px;
+  }
+  #topbar .tag{
+    color:#cfcfcf;
+    font-size:0.72rem;
+    background:rgba(0,0,0,0.45);
+    padding:0.5rem 0.9rem;
+    border-radius:4px;
+    letter-spacing:0.05em;
+  }
+
+  #crosshair{
+    position:absolute;top:50%;left:50%;
+    width:18px;height:18px;
+    transform:translate(-50%,-50%);
+  }
+  #crosshair::before,#crosshair::after{
+    content:"";
+    position:absolute;
+    background:rgba(255,255,255,0.85);
+    box-shadow:0 0 2px rgba(0,0,0,0.8);
+  }
+  #crosshair::before{left:8px;top:0;width:2px;height:18px;}
+  #crosshair::after{top:8px;left:0;width:18px;height:2px;}
+
+  #hotbar{
+    position:absolute;bottom:1.4rem;left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:4px;
+    background:rgba(0,0,0,0.35);
+    padding:5px;
+    border:2px solid rgba(0,0,0,0.5);
+  }
+  .slot{
+    width:44px;height:44px;
+    background:rgba(255,255,255,0.08);
+    border:2px solid rgba(0,0,0,0.4);
+    position:relative;
+  }
+  .slot.active{border-color:#fff;box-shadow:0 0 6px rgba(255,255,255,0.6);}
+  .slot .swatch{
+    position:absolute;inset:6px;
+  }
+
+  #instructions{
+    position:absolute;
+    bottom:5.6rem;left:50%;
+    transform:translateX(-50%);
+    color:#fff;
+    background:rgba(0,0,0,0.4);
+    padding:0.5rem 1rem;
+    border-radius:4px;
+    font-size:0.78rem;
+    letter-spacing:0.03em;
+    text-align:center;
+    white-space:nowrap;
+  }
+
+  #startScreen{
+    position:fixed;inset:0;
+    z-index:30;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,0.35);
+    cursor:pointer;
+    opacity:0;
+    transition:opacity 0.6s ease;
+    pointer-events:none;
+  }
+  #startScreen.show{opacity:1;pointer-events:auto;}
+  #startBox{
+    text-align:center;
+    color:#fff;
+    padding:2rem 2.6rem;
+    background:rgba(10,10,15,0.55);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:6px;
+  }
+  #startBox h2{
+    font-size:1.5rem;
+    letter-spacing:0.04em;
+    margin-bottom:0.6rem;
+    text-shadow:2px 2px 0 rgba(0,0,0,0.5);
+  }
+  #startBox p{
+    color:#c9c9c9;
+    font-size:0.85rem;
+    line-height:1.6;
+  }
+  #startBox .clickme{
+    margin-top:1.2rem;
+    display:inline-block;
+    background:var(--green-dark);
+    padding:0.6rem 1.4rem;
+    border-radius:4px;
+    font-weight:600;
+    letter-spacing:0.04em;
+    font-size:0.85rem;
+  }
+
+  #dayNight{
+    position:absolute;top:1rem;left:50%;
+    transform:translateX(-50%);
+    color:#fff;
+    background:rgba(0,0,0,0.4);
+    padding:0.4rem 0.9rem;
+    border-radius:4px;
+    font-size:0.75rem;
+    letter-spacing:0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="load-blocks"><span></span><span></span><span></span><span></span></div>
+  <div class="load-title">SUZER CRAFT</div>
+  <div class="load-sub">generating terrain…</div>
+  <div class="load-bar-track"><div class="load-bar-fill" id="loadFill"></div></div>
+</div>
+
+<div id="startScreen">
+  <div id="startBox">
+    <h2>SUZER CRAFT WORLD</h2>
+    <p>Real-time voxel world · custom water shader · day &amp; night cycle<br>WASD to move · mouse to look · SPACE / SHIFT to fly up &amp; down</p>
+    <div class="clickme">CLICK TO ENTER</div>
+  </div>
+</div>
+
+<div id="ui">
+  <div id="topbar">
+    <a href="index.html">← SUZER</a>
+    <span class="tag" id="fps">60 FPS</span>
+  </div>
+  <div id="dayNight">☀ DAY</div>
+  <div id="crosshair"></div>
+  <div id="instructions">WASD move · Mouse look · SPACE/SHIFT fly · ESC to release</div>
+  <div id="hotbar">
+    <div class="slot active"><div class="swatch" style="background:#5cbf4a;"></div></div>
+    <div class="slot"><div class="swatch" style="background:#7a5230;"></div></div>
+    <div class="slot"><div class="swatch" style="background:#9a9a9a;"></div></div>
+    <div class="slot"><div class="swatch" style="background:#dccb7a;"></div></div>
+    <div class="slot"><div class="swatch" style="background:#5b3a1e;"></div></div>
+    <div class="slot"><div class="swatch" style="background:#3a8a2c;"></div></div>
+    <div class="slot"><div class="swatch" style="background:#3f7fd6;"></div></div>
+    <div class="slot"><div class="swatch" style="background:#e8e8e8;"></div></div>
+    <div class="slot"><div class="swatch" style="background:#c9432f;"></div></div>
+  </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from "three";
+
+/* ================= PROCEDURAL PIXEL TEXTURES ================= */
+function makeTex(size, drawFn){
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+  drawFn(ctx, size);
+  const tex = new THREE.CanvasTexture(c);
+  tex.magFilter = THREE.NearestFilter;
+  tex.minFilter = THREE.NearestFilter;
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+function noisePixels(ctx, size, base, variance){
+  for(let y=0;y<size;y++){
+    for(let x=0;x<size;x++){
+      const n = (Math.random()-0.5)*variance;
+      const r = Math.max(0,Math.min(255, base[0]+n));
+      const g = Math.max(0,Math.min(255, base[1]+n));
+      const b = Math.max(0,Math.min(255, base[2]+n));
+      ctx.fillStyle = `rgb(${r|0},${g|0},${b|0})`;
+      ctx.fillRect(x,y,1,1);
+    }
+  }
+}
+
+const grassTop = makeTex(16,(ctx,s)=>noisePixels(ctx,s,[92,168,64],40));
+const dirtTex  = makeTex(16,(ctx,s)=>noisePixels(ctx,s,[121,82,48],30));
+const stoneTex = makeTex(16,(ctx,s)=>noisePixels(ctx,s,[130,130,132],26));
+const sandTex  = makeTex(16,(ctx,s)=>noisePixels(ctx,s,[220,203,122],20));
+const woodTexSide = makeTex(16,(ctx,s)=>{
+  noisePixels(ctx,s,[91,58,30],14);
+  ctx.fillStyle='rgba(50,32,16,0.5)';
+  for(let x=0;x<s;x+=4) ctx.fillRect(x,0,1,s);
+});
+const woodTexTop = makeTex(16,(ctx,s)=>noisePixels(ctx,s,[168,128,82],20));
+const leavesTex = makeTex(16,(ctx,s)=>noisePixels(ctx,s,[52,120,40],36));
+const grassSide = makeTex(16,(ctx,s)=>{
+  noisePixels(ctx,s,[121,82,48],30);
+  ctx.fillStyle = '#5ea83f';
+  for(let x=0;x<s;x++){
+    const h = 3 + Math.floor(Math.random()*3);
+    ctx.fillRect(x,0,1,h);
+  }
+});
+[grassTop,dirtTex,stoneTex,sandTex,woodTexSide,woodTexTop,leavesTex,grassSide].forEach(t=>t.needsUpdate=true);
+
+/* ================= SCENE ================= */
+const scene = new THREE.Scene();
+const skyTop = new THREE.Color('#5ec8f2');
+const skyBottom = new THREE.Color('#cfeeff');
+scene.fog = new THREE.Fog(0xbfe6f5, 40, 130);
+
+const camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 500);
+camera.position.set(0, 14, 24);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+/* ---- Sky dome shader ---- */
+const skyGeo = new THREE.SphereGeometry(400, 24, 16);
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide,
+  uniforms:{
+    topColor:{value:skyTop.clone()},
+    bottomColor:{value:skyBottom.clone()},
+    sunPos:{value:new THREE.Vector3(1,1,0)}
+  },
+  vertexShader:`
+    varying vec3 vWorldPos;
+    void main(){
+      vec4 wp = modelMatrix * vec4(position,1.0);
+      vWorldPos = wp.xyz;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+    }
+  `,
+  fragmentShader:`
+    uniform vec3 topColor;
+    uniform vec3 bottomColor;
+    uniform vec3 sunPos;
+    varying vec3 vWorldPos;
+    void main(){
+      float h = normalize(vWorldPos).y;
+      vec3 col = mix(bottomColor, topColor, clamp(h*1.2+0.15,0.0,1.0));
+      float sunDot = max(dot(normalize(vWorldPos), normalize(sunPos)), 0.0);
+      col += vec3(1.0,0.9,0.6) * pow(sunDot, 60.0) * 0.6;
+      gl_FragColor = vec4(col,1.0);
+    }
+  `
+});
+const skyDome = new THREE.Mesh(skyGeo, skyMat);
+scene.add(skyDome);
+
+/* ---- Lights ---- */
+const hemi = new THREE.HemisphereLight(0xbfe6f5, 0x4a6b3a, 0.55);
+scene.add(hemi);
+
+const sun = new THREE.DirectionalLight(0xfff2d6, 1.15);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left = -60;
+sun.shadow.camera.right = 60;
+sun.shadow.camera.top = 60;
+sun.shadow.camera.bottom = -60;
+sun.shadow.camera.near = 1;
+sun.shadow.camera.far = 200;
+sun.shadow.bias = -0.0015;
+scene.add(sun);
+scene.add(sun.target);
+
+const moon = new THREE.DirectionalLight(0x8fa8ff, 0.0);
+scene.add(moon);
+scene.add(moon.target);
+
+/* ================= TERRAIN ================= */
+const SIZE = 42;
+const HALF = SIZE/2;
+const WATER_LEVEL = 3;
+
+function noise2D(x,z, seed){
+  const s = Math.sin(x*12.9898 + z*78.233 + seed) * 43758.5453;
+  return s - Math.floor(s);
+}
+function smoothNoise(x,z,seed){
+  const xi = Math.floor(x), zi = Math.floor(z);
+  const xf = x-xi, zf = z-zi;
+  const v00 = noise2D(xi,zi,seed);
+  const v10 = noise2D(xi+1,zi,seed);
+  const v01 = noise2D(xi,zi+1,seed);
+  const v11 = noise2D(xi+1,zi+1,seed);
+  const i1 = v00*(1-xf)+v10*xf;
+  const i2 = v01*(1-xf)+v11*xf;
+  return i1*(1-zf)+i2*zf;
+}
+function fractalNoise(x,z){
+  let total=0, amp=1, freq=0.045, max=0;
+  for(let o=0;o<4;o++){
+    total += smoothNoise(x*freq, z*freq, o*17.1) * amp;
+    max += amp;
+    amp *= 0.5;
+    freq *= 2;
+  }
+  return total/max;
+}
+
+const heightMap = [];
+for(let x=0;x<SIZE;x++){
+  heightMap[x]=[];
+  for(let z=0;z<SIZE;z++){
+    const n = fractalNoise(x,z);
+    let h = Math.floor(n*10) + 1;
+    h = Math.max(1, Math.min(12,h));
+    heightMap[x][z]=h;
+  }
+}
+
+const boxGeo = new THREE.BoxGeometry(1,1,1);
+
+function matSet(top, side, bottom){
+  return [
+    new THREE.MeshStandardMaterial({map:side, roughness:1}),
+    new THREE.MeshStandardMaterial({map:side, roughness:1}),
+    new THREE.MeshStandardMaterial({map:top, roughness:1}),
+    new THREE.MeshStandardMaterial({map:bottom||top, roughness:1}),
+    new THREE.MeshStandardMaterial({map:side, roughness:1}),
+    new THREE.MeshStandardMaterial({map:side, roughness:1}),
+  ];
+}
+const grassMat = matSet(grassTop, grassSide, dirtTex);
+const dirtMat  = new THREE.MeshStandardMaterial({map:dirtTex, roughness:1});
+const stoneMat = new THREE.MeshStandardMaterial({map:stoneTex, roughness:1});
+const sandMat  = new THREE.MeshStandardMaterial({map:sandTex, roughness:1});
+
+let counts = {grass:0, dirt:0, stone:0, sand:0};
+for(let x=0;x<SIZE;x++){
+  for(let z=0;z<SIZE;z++){
+    const h = heightMap[x][z];
+    const layers = Math.min(4,h);
+    for(let l=0;l<layers;l++){
+      const y = h-1-l;
+      if(l===0){
+        if(h<=WATER_LEVEL+1) counts.sand++;
+        else counts.grass++;
+      } else if(y > h-4) counts.dirt++;
+      else counts.stone++;
+    }
+  }
+}
+
+const grassMesh = new THREE.InstancedMesh(boxGeo, grassMat, counts.grass);
+const dirtMesh  = new THREE.InstancedMesh(boxGeo, dirtMat, counts.dirt);
+const stoneMesh = new THREE.InstancedMesh(boxGeo, stoneMat, counts.stone);
+const sandMesh  = new THREE.InstancedMesh(boxGeo, sandMat, counts.sand);
+[grassMesh,dirtMesh,stoneMesh,sandMesh].forEach(m=>{m.castShadow=true;m.receiveShadow=true;});
+
+let gi=0, di=0, si=0, sai=0;
+const dummy = new THREE.Object3D();
+const treeSpots = [];
+
+for(let x=0;x<SIZE;x++){
+  for(let z=0;z<SIZE;z++){
+    const h = heightMap[x][z];
+    const layers = Math.min(4,h);
+    const wx = x-HALF, wz = z-HALF;
+    for(let l=0;l<layers;l++){
+      const y = h-1-l;
+      dummy.position.set(wx, y, wz);
+      dummy.updateMatrix();
+      if(l===0){
+        if(h<=WATER_LEVEL+1){ sandMesh.setMatrixAt(sai++, dummy.matrix); }
+        else {
+          grassMesh.setMatrixAt(gi++, dummy.matrix);
+          if(Math.random()<0.045 && h>WATER_LEVEL+1) treeSpots.push([wx,h,wz]);
+        }
+      } else if(y > h-4){
+        dirtMesh.setMatrixAt(di++, dummy.matrix);
+      } else {
+        stoneMesh.setMatrixAt(si++, dummy.matrix);
+      }
+    }
+  }
+}
+[grassMesh,dirtMesh,stoneMesh,sandMesh].forEach(m=>m.instanceMatrix.needsUpdate=true);
+scene.add(grassMesh, dirtMesh, stoneMesh, sandMesh);
+
+/* ---- Trees ---- */
+const trunkMat = matSet(woodTexTop, woodTexSide, woodTexTop);
+const leavesMat = new THREE.MeshStandardMaterial({map:leavesTex, roughness:1, transparent:true, alphaTest:0.4});
+
+const trunkCount = treeSpots.length*3;
+const leafCount = treeSpots.length*7;
+const trunkMesh = new THREE.InstancedMesh(boxGeo, trunkMat, Math.max(1,trunkCount));
+const leafMesh = new THREE.InstancedMesh(boxGeo, leavesMat, Math.max(1,leafCount));
+trunkMesh.castShadow = true; leafMesh.castShadow = true; leafMesh.receiveShadow = true;
+let ti=0, li=0;
+treeSpots.forEach(([x,h,z])=>{
+  for(let i=0;i<3;i++){
+    dummy.position.set(x,h+i,z);
+    dummy.updateMatrix();
+    trunkMesh.setMatrixAt(ti++, dummy.matrix);
+  }
+  const leafOffsets = [
+    [0,3,0],[1,3,0],[-1,3,0],[0,3,1],[0,3,-1],[0,4,0],[0,2,0]
+  ];
+  leafOffsets.forEach(([ox,oy,oz])=>{
+    dummy.position.set(x+ox,h+oy-1,z+oz);
+    dummy.updateMatrix();
+    leafMesh.setMatrixAt(li++, dummy.matrix);
+  });
+});
+trunkMesh.instanceMatrix.needsUpdate = true;
+leafMesh.instanceMatrix.needsUpdate = true;
+scene.add(trunkMesh, leafMesh);
+
+/* ================= WATER SHADER ================= */
+const waterGeo = new THREE.PlaneGeometry(SIZE+10, SIZE+10, 64, 64);
+waterGeo.rotateX(-Math.PI/2);
+const waterMat = new THREE.ShaderMaterial({
+  transparent:true,
+  uniforms:{
+    uTime:{value:0},
+    uColorShallow:{value:new THREE.Color('#3fa9d6')},
+    uColorDeep:{value:new THREE.Color('#0e3f66')},
+    uSunDir:{value:new THREE.Vector3(1,1,0.3)}
+  },
+  vertexShader:`
+    uniform float uTime;
+    varying vec2 vUv;
+    varying float vWave;
+    void main(){
+      vUv = uv;
+      vec3 pos = position;
+      float w = sin(pos.x*0.6 + uTime*1.3) * 0.09
+              + sin(pos.z*0.9 + uTime*1.7) * 0.07
+              + sin((pos.x+pos.z)*0.35 + uTime*0.8) * 0.06;
+      pos.y += w;
+      vWave = w;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
+    }
+  `,
+  fragmentShader:`
+    uniform vec3 uColorShallow;
+    uniform vec3 uColorDeep;
+    varying float vWave;
+    varying vec2 vUv;
+    void main(){
+      float mixAmt = smoothstep(-0.12,0.12,vWave);
+      vec3 col = mix(uColorDeep, uColorShallow, mixAmt);
+      float sparkle = pow(max(vWave,0.0), 2.0) * 2.5;
+      col += vec3(sparkle);
+      gl_FragColor = vec4(col, 0.82);
+    }
+  `
+});
+const water = new THREE.Mesh(waterGeo, waterMat);
+water.position.y = WATER_LEVEL - 0.55;
+scene.add(water);
+
+/* ---- Clouds ---- */
+const cloudMat = new THREE.MeshBasicMaterial({color:0xffffff, transparent:true, opacity:0.85});
+const clouds = new THREE.Group();
+for(let i=0;i<14;i++){
+  const cGroup = new THREE.Group();
+  const puffs = 3 + Math.floor(Math.random()*3);
+  for(let p=0;p<puffs;p++){
+    const geo = new THREE.BoxGeometry(3+Math.random()*2,1,2+Math.random()*2);
+    const m = new THREE.Mesh(geo, cloudMat);
+    m.position.set(p*2.6, 0, (Math.random()-0.5)*1.5);
+    cGroup.add(m);
+  }
+  cGroup.position.set((Math.random()-0.5)*140, 30+Math.random()*8, (Math.random()-0.5)*140);
+  cGroup.userData.speed = 0.4 + Math.random()*0.5;
+  clouds.add(cGroup);
+}
+scene.add(clouds);
+
+/* ================= CONTROLS (flying first-person) ================= */
+let yaw=0, pitch=0;
+let locked=false;
+const move = {f:false,b:false,l:false,r:false,up:false,down:false};
+const velocity = new THREE.Vector3();
+
+renderer.domElement.addEventListener('click', ()=>{
+  if(!locked) renderer.domElement.requestPointerLock();
+});
+document.addEventListener('pointerlockchange', ()=>{
+  locked = document.pointerLockElement === renderer.domElement;
+  document.getElementById('startScreen').classList.toggle('show', !locked);
+});
+document.getElementById('startScreen').addEventListener('click', ()=>{
+  renderer.domElement.requestPointerLock();
+});
+document.addEventListener('mousemove', (e)=>{
+  if(!locked) return;
+  yaw -= e.movementX * 0.0022;
+  pitch -= e.movementY * 0.0022;
+  pitch = Math.max(-Math.PI/2+0.05, Math.min(Math.PI/2-0.05, pitch));
+});
+document.addEventListener('keydown', (e)=>{
+  switch(e.code){
+    case 'KeyW': move.f=true; break;
+    case 'KeyS': move.b=true; break;
+    case 'KeyA': move.l=true; break;
+    case 'KeyD': move.r=true; break;
+    case 'Space': move.up=true; break;
+    case 'ShiftLeft': case 'ShiftRight': move.down=true; break;
+  }
+});
+document.addEventListener('keyup', (e)=>{
+  switch(e.code){
+    case 'KeyW': move.f=false; break;
+    case 'KeyS': move.b=false; break;
+    case 'KeyA': move.l=false; break;
+    case 'KeyD': move.r=false; break;
+    case 'Space': move.up=false; break;
+    case 'ShiftLeft': case 'ShiftRight': move.down=false; break;
+  }
+});
+
+/* Hotbar number key select (cosmetic) */
+document.addEventListener('keydown',(e)=>{
+  const n = parseInt(e.key);
+  if(n>=1 && n<=9){
+    document.querySelectorAll('.slot').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.slot')[n-1].classList.add('active');
+  }
+});
+
+/* ================= DAY / NIGHT CYCLE ================= */
+let t = 0.28; // time of day 0..1
+const DAY_SPEED = 0.008;
+const dayNightLabel = document.getElementById('dayNight');
+
+function updateDayNight(dt){
+  t += DAY_SPEED*dt;
+  if(t>1) t-=1;
+  const angle = t*Math.PI*2 - Math.PI/2;
+  const sunDir = new THREE.Vector3(Math.cos(angle), Math.sin(angle), 0.35).normalize();
+  sun.position.copy(sunDir).multiplyScalar(80);
+  sun.target.position.set(0,0,0);
+  moon.position.copy(sunDir).multiplyScalar(-80);
+  moon.target.position.set(0,0,0);
+
+  const daylight = Math.max(0, sunDir.y);
+  sun.intensity = daylight*1.3;
+  moon.intensity = Math.max(0,-sunDir.y)*0.35;
+  hemi.intensity = 0.25 + daylight*0.4;
+
+  const dayTop = new THREE.Color('#5ec8f2');
+  const dayBottom = new THREE.Color('#cfeeff');
+  const nightTop = new THREE.Color('#04070f');
+  const nightBottom = new THREE.Color('#101a2e');
+  const duskTop = new THREE.Color('#3a3a6b');
+  const duskBottom = new THREE.Color('#e8926b');
+
+  let top,bottom;
+  if(daylight>0.25){
+    top = dayTop; bottom = dayBottom;
+  } else if(sunDir.y > -0.15){
+    const f = (sunDir.y+0.15)/0.4;
+    top = duskTop.clone().lerp(dayTop, Math.max(0,f));
+    bottom = duskBottom.clone().lerp(dayBottom, Math.max(0,f));
+    if(f<0){ top = nightTop.clone().lerp(duskTop, f+1); bottom = nightBottom.clone().lerp(duskBottom, f+1);}
+  } else {
+    top = nightTop; bottom = nightBottom;
+  }
+  skyMat.uniforms.topColor.value.copy(top);
+  skyMat.uniforms.bottomColor.value.copy(bottom);
+  skyMat.uniforms.sunPos.value.copy(sunDir);
+  scene.fog.color.copy(bottom);
+
+  if(daylight>0.15) dayNightLabel.textContent = '☀ DAY';
+  else if(sunDir.y > -0.15) dayNightLabel.textContent = '🌅 DUSK';
+  else dayNightLabel.textContent = '🌙 NIGHT';
+}
+
+/* ================= RESIZE ================= */
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* ================= LOADING SEQUENCE ================= */
+const loadFill = document.getElementById('loadFill');
+let lp = 0;
+const loadInterval = setInterval(()=>{
+  lp += 8 + Math.random()*14;
+  if(lp>=100){
+    lp=100;
+    clearInterval(loadInterval);
+    setTimeout(()=>{
+      document.getElementById('loader').classList.add('done');
+      document.getElementById('ui').classList.add('show');
+      document.getElementById('startScreen').classList.add('show');
+    }, 300);
+  }
+  loadFill.style.width = lp+'%';
+}, 140);
+
+/* ================= ANIMATE ================= */
+const clock = new THREE.Clock();
+let fpsAcc=0, fpsFrames=0;
+
+function animate(){
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.1);
+
+  updateDayNight(dt*10);
+  waterMat.uniforms.uTime.value += dt;
+
+  clouds.children.forEach(c=>{
+    c.position.x += c.userData.speed*dt;
+    if(c.position.x>90) c.position.x=-90;
+  });
+
+  if(locked){
+    const dir = new THREE.Vector3();
+    const forward = new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw)).multiplyScalar(-1);
+    const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+    if(move.f) dir.add(forward);
+    if(move.b) dir.sub(forward);
+    if(move.r) dir.add(right);
+    if(move.l) dir.sub(right);
+    dir.normalize();
+    const speed = 14*dt;
+    camera.position.addScaledVector(dir, speed);
+    if(move.up) camera.position.y += speed;
+    if(move.down) camera.position.y -= speed;
+    camera.position.y = Math.max(camera.position.y, WATER_LEVEL+0.6);
+
+    const euler = new THREE.Euler(pitch, yaw, 0, 'YXZ');
+    camera.quaternion.setFromEuler(euler);
+  }
+
+  renderer.render(scene, camera);
+
+  fpsAcc += dt; fpsFrames++;
+  if(fpsAcc>0.5){
+    document.getElementById('fps').textContent = Math.round(fpsFrames/fpsAcc)+' FPS';
+    fpsAcc=0; fpsFrames=0;
+  }
+}
+animate();
+</script>
+</body>
+</html>
+
